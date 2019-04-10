@@ -8,6 +8,8 @@
         <home-cate-icon></home-cate-icon>
         <!-- 首页活动入口 -->
         <home-active></home-active>
+        <!-- 首页惠民特卖商品 -->
+        <home-goods></home-goods>
     </div>
 </template>
 
@@ -16,16 +18,25 @@ import SearchBar from './SearchBar.vue'
 import HomeSwiper from './HomeSwiper.vue'
 import HomeCateIcon from './HomeCateIcon.vue'
 import HomeActive from './HomeActive.vue'
+import HomeGoods from './HomeGoods.vue'
 
 export default {
     name:'home',
     components:{
-        SearchBar, HomeSwiper, HomeCateIcon, HomeActive
+        SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods
     }
 }
 
 </script>
-<style scoped>
-
+<style>
+/* 精选商家 惠民特卖 等模块logo样式 */
+.model-logo {
+    width: 100%;
+    padding: 0.56rem 0 0.26rem 0;
+    text-align: center;
+}
+.model-logo img {
+    height: 0.4rem;
+}
 </style>
 
