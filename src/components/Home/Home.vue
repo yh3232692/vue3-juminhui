@@ -34,12 +34,9 @@ export default {
             version:581,
             county:'东城区'
         }
-        this.$post('NewIndex/homeIndexnew_four',param)
+        this.$post('/api/NewIndex/homeIndexnew_four',param)
             .then((response) => {
-                console.log(response)
-            })
-            .then((err) => {
-                console.log(err);
+               
             })
     },
 }
