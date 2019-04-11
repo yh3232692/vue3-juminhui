@@ -24,7 +24,24 @@ export default {
     name:'home',
     components:{
         SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods
-    }
+    },
+    mounted() {
+        let param = {
+            latitude:'39.90468941207866',
+            longitude:'116.40717057457375',
+            user_id:15159,
+            name:'北京市',
+            version:581,
+            county:'东城区'
+        }
+        this.$post('NewIndex/homeIndexnew_four',param)
+            .then((response) => {
+                console.log(response)
+            })
+            .then((err) => {
+                console.log(err);
+            })
+    },
 }
 
 </script>
