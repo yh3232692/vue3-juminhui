@@ -1,63 +1,15 @@
 <template>
     <div id="home-cate-icon">
         <ul class="big-cate">
-            <li class="cates">
-                <img src="../../assets/icons/home-icon.png" alt="" class="icons">
-                <p>惠民商圈</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon.png" alt="" class="icons">
-                <p>惠民商圈</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon.png" alt="" class="icons">
-                <p>惠民商圈</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon.png" alt="" class="icons">
-                <p>惠民商圈</p>
+            <li class="cates" v-for=" (tIcon, index) in topIcon ">
+                <img :src="tIcon.img" alt="" class="icons">
+                <p>{{tIcon.name}}</p>
             </li>
         </ul>
         <ul class="small-cate">
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
-            </li>
-            <li class="cates">
-                <img src="../../assets/icons/home-icon2.png" alt="" class="icons">
-                <p>美食广场</p>
+            <li class="cates" v-for="(icon, index) in icons">
+                <img :src="icon.img" alt="" class="icons">
+                <p>{{icon.name}}</p>
             </li>
         </ul>
     </div>
@@ -65,7 +17,8 @@
 
 <script>
 export default {
-    name:'home-cate-icon'
+    name:'home-cate-icon',
+    props: ['topIcon','icons']
 }
 </script>
 

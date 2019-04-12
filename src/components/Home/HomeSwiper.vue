@@ -2,8 +2,8 @@
     <div id="home-swiper">
         <swiper :options="swiperOption" >
             <swiper-slide 
-				v-for="(slide, index) in swiperSlides" :key="index">
-				<img :src="slide" alt="">
+				v-for="(slide, index) in sliders" :key="index">
+				<img :src="slide.image" alt="">
 			</swiper-slide>
         </swiper>
     </div>
@@ -15,6 +15,7 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 
 export default {
 	name: "home-swiper",
+	props:['sliders'],
 	data() {
 		return {
 			swiperOption: { //设置swiper组件初始化参数
@@ -28,12 +29,7 @@ export default {
 						alert(this.realIndex); //获取当前点击索引
 					}
 				}
-			},
-			swiperSlides: [
-				"https://oss.jmhshop.com/Public/upload/real/2019/04-04/5ca5a46fa6adb.jpg",
-				"https://oss.jmhshop.com/Public/upload/ad/2018/11-22/5bf6123aaeb99.png",
-				"https://oss.jmhshop.com/Public/upload/ad/2018/11-22/5bf616621f739.png"
-			]
+			}
 		};
 	},
 	mounted() {},

@@ -5,26 +5,16 @@
             <div class="tehui active-box">
                 <div class="title-box">
                     <p class="title">
-                        <span class="c-red">每日特惠</span>
-                        <img src="https://oss.jmhshop.com/Public/upload/category/2018/10-30/5bd845491d256.png" alt="">
+                        <span class="c-red">{{special.title}}</span>
+                        <img :src="special.icon" alt="">
                     </p>
-                    <p class="desc">大牌促销 实惠到家</p>
+                    <p class="desc">{{special.desc}}</p>
                 </div>
                 <ul class="tehui-list">
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/goods/2018/11-14/5bebcc782af54.jpg" alt="">
-                        <p class="now-price">¥16.80</p>
-                        <p class="line-price">¥32.80</p>
-                    </li>
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/goods/2018/11-14/5bebcc782af54.jpg" alt="">
-                        <p class="now-price">¥16.80</p>
-                        <p class="line-price">¥32.80</p>
-                    </li>
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/goods/2018/11-14/5bebcc782af54.jpg" alt="">
-                        <p class="now-price">¥88.00</p>
-                        <p class="line-price">¥150.00</p>
+                    <li v-for="item in good">
+                        <img :src="item.original_img" alt="">
+                        <p class="now-price">¥{{item.price}}</p>
+                        <p class="line-price">¥{{item.cost_price}}</p>
                     </li>
                 </ul>
             </div>
@@ -126,7 +116,57 @@
 
 <script>
 export default {
-    name:'home-active'
+    name:'home-active',
+    props:['special'],
+    data () {
+        return {
+            good: [],
+            initInter:null
+        }
+    },
+    methods: {
+        makeGood(goods) {
+            let arr = [];
+            for (let i = 0; i < goods.length; i += 3) {
+                let item = goods.slice(i, i + 3);
+                if (item.length < 3) {
+                    if (item.length == 1) {
+                        item.unshift(goods[goods.length - 2]);
+                        item.unshift(goods[goods.length - 3]);
+                    }
+                    if (item.length == 2) {
+                        item.unshift(goods[goods.length - 3]);
+                    }
+                }
+                arr.push(item);
+            }
+            this.intervalInit(arr);
+        },
+        intervalInit(data) {
+            let count = 0;
+            this.good = data[0];
+            if (data.length > 1) {
+                this.initInter = setInterval(() => {
+                    count++;
+                    if (count >= data.length) {
+                        count = 0;
+                    }
+                    this.good = [];
+                    setTimeout(() => {
+                        this.good = data[count]; 
+                    }, 100);
+                }, 4000)
+            }
+        }
+    },
+    mounted() {
+        // console.log(this.special);
+        let goods = this.special.goods;
+        this.makeGood(goods)
+        
+    },
+        
+
 }
 </script>
 
@@ -221,7 +261,14 @@ export default {
 }
 .tehui-list li {
     text-align: center;
-    
+    /*动画名称*/
+    -webkit-animation-name: fadeIn;
+    /*动画持续时间*/
+    -webkit-animation-duration: 2s;
+    /*动画次数*/
+    -webkit-animation-iteration-count: 1;
+    /*延迟时间*/
+    -webkit-animation-delay: 0s;
 }
 .tehui-list li img{
     width: 1.08rem;
@@ -384,5 +431,22 @@ export default {
     right: 0;
     bottom: 0.26rem;
 }
+
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0; /*初始状态 透明度为0*/
+    }
+
+    50% {
+        opacity: 0.5; /*中间状态 透明度为0*/
+    }
+
+    100% {
+        opacity: 1; /*结尾状态 透明度为1*/
+    }
+}
+
+
 </style>
 

@@ -3,11 +3,11 @@
         <!-- 首页顶部搜索组件 -->
         <search-bar></search-bar>
         <!-- 首页轮播 -->
-        <home-swiper></home-swiper>
+        <home-swiper :sliders="slider"></home-swiper>
         <!-- 首页图标入口 -->
-        <home-cate-icon></home-cate-icon>
+        <home-cate-icon :topIcon="topIcon" :icons="icons" ></home-cate-icon>
         <!-- 首页活动入口 -->
-        <home-active></home-active>
+        <home-active :special="special" v-if="flag"></home-active>
         <!-- 首页惠民特卖商品 -->
         <home-goods></home-goods>
     </div>
@@ -22,8 +22,14 @@ import HomeGoods from './HomeGoods.vue'
 
 export default {
     name:'home',
-    components:{
-        SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods
+    data() {
+        return {
+            flag: false, //初始化组件显示隐藏
+            topIcon: [], //顶部Icon入口
+            icons: [], //小icon入口
+            slider: [], //轮播图
+            special: {} //每日特惠模块
+        }
     },
     mounted() {
         let param = {
@@ -36,8 +42,21 @@ export default {
         }
         this.$post('/api/NewIndex/homeIndexnew_four',param)
             .then((response) => {
-               
+                if (response.status == 1) {
+                    return response.result;
+                }
             })
+            .then((data) => {
+                this.topIcon = data.TopIcon
+                this.icons   = data.Icon
+                this.slider  = data.ad
+                this.special = data.daily_special
+                
+                this.flag    = true
+            })
+    },
+    components:{
+        SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods
     },
 }
 
