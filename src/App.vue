@@ -1,17 +1,28 @@
 <template>
   <div id="app">
+    <loading v-show="isShow"></loading>
     <home></home>
   </div>
 </template>
 
 <script>
 import Home from './components/Home/Home.vue'
+import Loading from './components/common/Loading.vue'
+import {mapState,mapGetters,mapActions} from 'vuex'
 
 export default {
   name: 'app',
   components: {
-    Home
-  }
+    Home,Loading
+  },
+  computed: {
+    // ...mapState({   //第一种写法
+    //   isShow: state => state.loadingState.loadingState
+    // }),
+    ...mapGetters('loadingState',[  //第二种写法
+      'isShow'
+    ])
+  },
 }
 </script>
 

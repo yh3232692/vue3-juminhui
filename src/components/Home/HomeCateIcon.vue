@@ -1,13 +1,13 @@
 <template>
     <div id="home-cate-icon">
         <ul class="big-cate">
-            <li class="cates" v-for=" (tIcon, index) in topIcon ">
+            <li class="cates" v-for=" (tIcon, index) in topIcon " :key="index">
                 <img :src="tIcon.img" alt="" class="icons">
                 <p>{{tIcon.name}}</p>
             </li>
         </ul>
         <ul class="small-cate">
-            <li class="cates" v-for="(icon, index) in icons">
+            <li class="cates" v-for="(icon, index) in icons" :key="index">
                 <img :src="icon.img" alt="" class="icons">
                 <p>{{icon.name}}</p>
             </li>

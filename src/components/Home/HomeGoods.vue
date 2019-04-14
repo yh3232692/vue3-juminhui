@@ -3,86 +3,28 @@
         <div class="model-logo">
             <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_biaotitemai@2x.png" alt="">
         </div>
-        <div class="good-cate">
+        <div class="good-cate" ref="cateBox">
             <ul>
-                <li>热卖</li>
-                <li class="cate-active">专供</li>
-                <li>优品专供</li>
-                <li>美妆护品</li>
-                <li>生活用品</li>
-                <li>休闲零食</li>
-                <li>数码电子</li>
+                <li :class="[index == cateIndex ? 'cate-active' : '']" 
+                v-for="(cate, index) in categroy" 
+                :key="index" @click="getGoods(cate.id, index)" ref="cate">
+                    {{cate.category_name}}
+                </li>
             </ul>
         </div>
         <div class="goods-box">
             <ul>
-                <li>
-                    <img src="https://oss.jmhshop.com/Public/upload/goods/2019/03-15/5c8b1ad12edb8.jpg" alt="">
+                <li v-for="(good, index) in goodsList" :key="index">
+                    <img :src="good.original_img" alt="">
                     <div class="goods-cont">
-                        <p class="name">【送一个月不限速套餐】随U行移动WiFi M6 62mm*46mm*8.5mm</p>
+                        <p class="name">{{good.good_name}}</p>
                         <p class="now-price">
                             <span class="price-name">会员价:¥ </span>
-                            <span class="price">288.00</span>
+                            <span class="price">{{good.shop_price}}</span>
                         </p>
                         <p class="old-price">
-                            <span class="line-price">原价:¥299.00</span>
-                            <span class="sale-count">销量：142</span>
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <img src="https://oss.jmhshop.com/Public/upload/goods/2019/03-15/5c8b1ad12edb8.jpg" alt="">
-                    <div class="goods-cont">
-                        <p class="name">【送一个月不限速套餐】随U行移动WiFi M6 62mm*46mm*8.5mm</p>
-                        <p class="now-price">
-                            <span class="price-name">会员价:¥ </span>
-                            <span class="price">288.00</span>
-                        </p>
-                        <p class="old-price">
-                            <span class="line-price">原价:¥299.00</span>
-                            <span class="sale-count">销量：142</span>
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <img src="https://oss.jmhshop.com/Public/upload/goods/2019/03-15/5c8b1ad12edb8.jpg" alt="">
-                    <div class="goods-cont">
-                        <p class="name">【送一个月不限速套餐】随U行移动WiFi M6 62mm*46mm*8.5mm</p>
-                        <p class="now-price">
-                            <span class="price-name">会员价:¥ </span>
-                            <span class="price">288.00</span>
-                        </p>
-                        <p class="old-price">
-                            <span class="line-price">原价:¥299.00</span>
-                            <span class="sale-count">销量：142</span>
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <img src="https://oss.jmhshop.com/Public/upload/goods/2019/03-15/5c8b1ad12edb8.jpg" alt="">
-                    <div class="goods-cont">
-                        <p class="name">【送一个月不限速套餐】随U行移动WiFi M6 62mm*46mm*8.5mm</p>
-                        <p class="now-price">
-                            <span class="price-name">会员价:¥ </span>
-                            <span class="price">288.00</span>
-                        </p>
-                        <p class="old-price">
-                            <span class="line-price">原价:¥299.00</span>
-                            <span class="sale-count">销量：142</span>
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <img src="https://oss.jmhshop.com/Public/upload/goods/2019/03-15/5c8b1ad12edb8.jpg" alt="">
-                    <div class="goods-cont">
-                        <p class="name">【送一个月不限速套餐】随U行移动WiFi M6 62mm*46mm*8.5mm</p>
-                        <p class="now-price">
-                            <span class="price-name">会员价:¥ </span>
-                            <span class="price">288.00</span>
-                        </p>
-                        <p class="old-price">
-                            <span class="line-price">原价:¥299.00</span>
-                            <span class="sale-count">销量：142</span>
+                            <span class="line-price">原价:¥{{good.cost_price}}</span>
+                            <span class="sale-count">销量：{{good.sales_sum}}</span>
                         </p>
                     </div>
                 </li>
@@ -93,7 +35,41 @@
 
 <script>
 export default {
-    name:'home-goods'
+    name:'home-goods',
+    props:['categroy', 'goodsList'],
+    data() {
+        return {
+            cateIndex:0,
+            cateXList:[]
+        }
+    },
+    methods: {
+        getGoods(id,index) { //获取当前点击的是哪个分类
+            this.cateIndex = index
+            const cateBox = this.$refs.cateBox;
+            let left = this.cateXList[index];
+            if (left < 375 / 2) {
+                left = 0;
+            }
+            if (left > 375 / 2) {
+                left -= 375 / 2;
+            }
+            cateBox.scrollLeft = left
+            this.$emit('getCatId',id)
+        },
+        getEleX() {
+            const cateXList = new Array();
+            const cateList = this.$refs.cate;
+            const cateXOne = cateList[0].getBoundingClientRect().left;
+            cateList.forEach(element => {
+                cateXList.push(element.getBoundingClientRect().left - cateXOne);
+            });
+            this.cateXList = cateXList
+        }
+    },
+    mounted() {
+        this.getEleX()
+    },
 }
 </script>
 <style scoped>

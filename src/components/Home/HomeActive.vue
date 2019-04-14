@@ -2,6 +2,7 @@
     <div id="home-active">
         <!-- 活动模块第一行 -->
         <div class="box-1">
+            <!-- 每日特惠模块 -->
             <div class="tehui active-box">
                 <div class="title-box">
                     <p class="title">
@@ -11,67 +12,75 @@
                     <p class="desc">{{special.desc}}</p>
                 </div>
                 <ul class="tehui-list">
-                    <li v-for="item in good">
+                    <li v-for="(item, index) in good" :key="index">
                         <img :src="item.original_img" alt="">
                         <p class="now-price">¥{{item.price}}</p>
                         <p class="line-price">¥{{item.cost_price}}</p>
                     </li>
                 </ul>
             </div>
+            <!-- 领优惠模块 -->
             <div class="fuli active-box">
                 <div class="title-box">
                     <p class="title">
-                        <span class="c-zise">领优惠</span>
-                        <img src="https://oss.jmhshop.com/Public/upload/middle_icons/2018/10-31/5bd90b8ff2ab0.png" alt="">
+                        <span class="c-zise">{{lottery.title}}</span>
+                        <img :src="lottery.icon" alt="">
                     </p>
-                    <p class="desc">超值惊喜等你来</p>
+                    <p class="desc">{{lottery.desc}}</p>
                 </div>
                 <div class="fuli-img">
-                    <img src="https://oss.jmhshop.com/Public/upload/middle_imgs/2018/10-31/5bd90b80512cd.png" alt="">
+                    <img :src="lottery.image" alt="">
                 </div>
             </div>
         </div>
         <!-- 活动模块第二行 -->
         <div class="box-2">
             <ul class="b2-box">
+                <!-- 优惠好房 -->
                 <li class="active-box haofang">
                     <div class="title-box">
                         <p class="title">
-                            <span class="c-red">每日特惠</span>
-                            <img src="https://oss.jmhshop.com/Public/upload/category/2018/10-30/5bd845491d256.png" alt="">
+                            <span class="c-red">{{huiHouse.title}}</span>
+                            <img :src="huiHouse.icon" alt="">
                         </p>
-                        <p class="desc">大牌促销 实惠到家</p>
+                        <p class="desc">{{huiHouse.desc}}</p>
                     </div>
                     <div class="b2-bg">
-                        <img src="https://oss.jmhshop.com/Public/upload/middle_imgs/2018/10-31/5bd90c2c5be44.png" alt="">
-                        <p>黄山老妈</p>
+                        <img :src="huiHouse.image" alt="">
+                        <p>{{huiHouse.name}}</p>
                     </div>
                 </li>
+                <!-- 惠民商圈 -->
                 <li class="active-box shangquan">
                     <div class="title-box">
                         <p class="title">
-                            <span class="c-red">每日特惠</span>
-                            <img src="https://oss.jmhshop.com/Public/upload/category/2018/10-30/5bd845491d256.png" alt="">
+                            <span class="c-red">{{shangQuan.title}}</span>
+                            <img :src="shangQuan.icon" alt="">
                         </p>
-                        <p class="desc">大牌促销 实惠到家</p>
+                        <p class="desc">{{shangQuan.desc}}</p>
                     </div>
                     <div class="b2-bg">
-                        <img src="https://oss.jmhshop.com/Public/upload/middle_imgs/2018/10-31/5bd90c2c5be44.png" alt="">
-                        <p>黄山老妈</p>
+                        <img :src="shangQuan.image" alt="">
+                        <p>{{shangQuan.name}}</p>
                     </div> 
                 </li>
             </ul>
         </div>
         <!-- 附近商家 -->
         <div class="near-shop">
-            <img src="https://oss.jmhshop.com/Public/upload/Store/2016/10-11/57fc8a710defc.png" alt="" class="shop-logo">
+            <img :src="market.market_img" alt="" class="shop-logo">
             <div class="content">
-                <p class="shop-name">聚民惠望京店</p>
+                <p class="shop-name">{{market.market_name}}</p>
                 <p class="star">
                     <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_xingxingw@2x.png" alt="">
                     <span>5.0</span>
                 </p>
-                <p class="desc">8.92km<span> | </span>起送费￥20<span> | </span>配送费￥20</p>
+                <p class="desc">{{ getKmOrM }}
+                    <span> | </span>
+                    起送费￥{{market.start_price}}
+                    <span> | </span>
+                    配送费￥{{market.shipping_price}}
+                </p>
             </div>
             <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_gengduox@2x.png" alt="" class="more">
             <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_julizuijinxsx@2x.png" alt="" class="near-logo">
@@ -83,30 +92,10 @@
             </div>
             <div class="jingxuan-box">
                 <ul class="jingxuan-scroll">
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/license/2018-09-30/5bb08f16a9508.png" alt="">
-                        <p class="name">眉州东坡（新荟城店）</p>
-                        <p class="label">甜点饮品|烧烤烤肉烧烤烤肉</p>
-                    </li>
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/license/2018-09-30/5bb08f16a9508.png" alt="">
-                        <p class="name">眉州东坡（新荟城店）</p>
-                        <p class="label">甜点饮品|烧烤烤肉烧烤烤肉</p>
-                    </li>
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/license/2018-09-30/5bb08f16a9508.png" alt="">
-                        <p class="name">眉州东坡（新荟城店）</p>
-                        <p class="label">甜点饮品|烧烤烤肉烧烤烤肉</p>
-                    </li>
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/license/2018-09-30/5bb08f16a9508.png" alt="">
-                        <p class="name">眉州东坡（新荟城店）</p>
-                        <p class="label">甜点饮品|烧烤烤肉烧烤烤肉</p>
-                    </li>
-                    <li>
-                        <img src="https://oss.jmhshop.com/Public/upload/license/2018-09-30/5bb08f16a9508.png" alt="">
-                        <p class="name">眉州东坡（新荟城店）</p>
-                        <p class="label">甜点饮品|烧烤烤肉烧烤烤肉</p>
+                    <li v-for="(shop, index) in shops" :key="index">
+                        <img :src="shop.fc_shop_img" alt="">
+                        <p class="name">{{shop.fc_shop_name}}</p>
+                        <p class="label">{{shop.category_name}}</p>
                     </li>
                 </ul>
             </div>
@@ -117,15 +106,22 @@
 <script>
 export default {
     name:'home-active',
-    props:['special'],
+    props:['special','lottery','huiHouse','shangQuan','shops','market'],
     data () {
         return {
             good: [],
             initInter:null
         }
     },
+    computed: {
+        getKmOrM () { //处理距离的字段
+            let juli = Number(this.market.juli)
+            juli = juli > 999 ? (juli/1000).toFixed(2) + 'km' : juli + 'm'
+            return juli;
+        }
+    },
     methods: {
-        makeGood(goods) {
+        makeGood(goods) { //处理每日特惠商品数据
             let arr = [];
             for (let i = 0; i < goods.length; i += 3) {
                 let item = goods.slice(i, i + 3);
@@ -142,7 +138,7 @@ export default {
             }
             this.intervalInit(arr);
         },
-        intervalInit(data) {
+        intervalInit(data) { //每日优惠商品定时任务
             let count = 0;
             this.good = data[0];
             if (data.length > 1) {
@@ -161,9 +157,9 @@ export default {
     },
     mounted() {
         // console.log(this.special);
+        //处理每日特惠商品
         let goods = this.special.goods;
-        this.makeGood(goods)
-        
+        this.makeGood(goods)  
     },
         
 
@@ -324,16 +320,20 @@ export default {
 .b2-bg {
     position: relative;
     margin-top: 0.18rem;
-    /* overflow: hidden; */
-    clear: both;
 }
 .b2-bg img{
     width: 3.19rem;
     height: 1.7rem;
-    position: absolute;
-    left: 0;
-    top: 0;
 }
+.b2-bg p {
+    position: absolute;
+    left: 0.1rem;
+    bottom: 0.2rem;
+    z-index: 1;
+    color: #fff;
+    font-size: 0.24rem;
+}
+
 
 /* 活动板块公用标题样式 */
 .title-box .title {

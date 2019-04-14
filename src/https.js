@@ -1,10 +1,21 @@
+/**********************************************************************************
+ * ================================================================================
+ * 文件说明：封装数据请求的公用方法，跨域
+ *          技术栈：vue axios js-md5 qs
+ * Author   Mr.Yao
+ * Date     2019年4月14日
+ * ================================================================================
+ *********************************************************************************/
+
 import axios from 'axios';
 import 'mint-ui/lib/style.css';
+import store from './store/store.js'
 import { MessageBox,Indicator } from 'mint-ui'; 
 import md5 from 'js-md5';
-import qs from 'qs';
+import qs from 'qs';    //处理发起网络请求传递后台参数的格式
 
-axios.defaults.timeout = 5000;
+
+axios.defaults.timeout = 10000;
 // axios.defaults.headers.common['Authorization'] = ''
 
 // axios.defaults.baseURL ='https://cshop.jminhui.com/Api/';
@@ -21,17 +32,16 @@ axios.interceptors.request.use(
         // if(token){
         //   config.params = {'token':token}
         // }
-        Indicator.open({
-            text: '加载中,请稍后...',
-            spinnerType: 'fading-circle'
-        });
         console.log(config.data)
+        // 开始调用全局loading组件
+        store.dispatch("loadingState/isShowFun",true)
         return config;
     },
     error => {
         MessageBox.alert('数据加载超时,请检查您的网络或稍后重试!').then(action => {
-            Indicator.close();
+            store.dispatch("loadingState/isShowFun",false)
         });
+        console.log(error);
         return Promise.reject(error);
     }
 );
@@ -48,13 +58,14 @@ axios.interceptors.response.use(
         console.log('=============亲，数据包回来了=============')
         console.log(response.data)
         console.log('=========================================')
-        Indicator.close(); 
+        store.dispatch("loadingState/isShowFun",false)
         return response;
     },
     error => {
         MessageBox.alert('数据加载失败!').then(action => {
-            Indicator.close();
+            store.dispatch("loadingState/isShowFun",false)
         });
+        console.log(error);
         return Promise.reject(error)
     }
 )
@@ -93,7 +104,8 @@ export function post(url,data = {}){
         axios.post(url,data)
             .then(response => {
                 resolve(response.data);
-            },err => {
+            })
+            .catch(err => {
                 reject(err)
             })
     })
