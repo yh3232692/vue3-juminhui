@@ -3,7 +3,7 @@
     <div id="search-bar">
         <!-- 最顶部的定位部分 -->
         <div class="pos-box">
-            <div class="position">
+            <div class="position" id="position">
                 <img src="../../assets/icons/home-dingwei.png" alt="" class="dingwei">
                 <span>日坛北路33号望京SOHO</span>
                 <img src="../../assets/icons/home-jiantou.png" alt="" class="arrow">
@@ -39,6 +39,13 @@ export default {
         display: flex;
         justify-content:space-between;
         flex-wrap: nowrap;
+        position: fixed;
+        background: #f54440;
+        left: 0;
+        top: 0;
+        z-index: 11;
+        padding: 0 0.2rem;
+        box-sizing: border-box;
     }
     .position {
         display: flex;
@@ -83,6 +90,7 @@ export default {
         width: 100%;
         padding: 0.1rem 0 0.14rem 0;
         box-sizing: border-box;
+        padding-top: 0.7rem;
     }
     .searchs {
         width: 100%;

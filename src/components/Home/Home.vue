@@ -21,6 +21,8 @@
             :categroy="categroy" 
             :goodsList="goodsList" 
             @getCatId="getCatId"
+            :cateBarState="cateBarState"
+            ref="catesTop"
             v-if="flag">
         </home-goods>
     </div>
@@ -63,12 +65,14 @@ export default {
                 market_id:'',
                 p:1
             },
-            isGetMore:true,
-            cateClickState:true
+            isGetMore:true,     //是否允许上拉触底加载更多
+            cateClickState:true,    //分类点击状态
+            cateBarState:false  //是否显示悬浮商品分类
         }
     },
     methods: {
-        getGoodList () {
+        getGoodList () { //获取分类下的商品数据
+            // 如果当前isGetMore为false，则无需加载分页数据，否则需要加载
             if (!this.isGetMore) return false;
 
             this.$post('/api/NewIndex/getGoods',{
@@ -93,29 +97,46 @@ export default {
                 }
             })
         },
-        getCatId(id) {
+        getCatId(id) {  //通过获取到的分类id重新获取数据
             this.params.cat_id = id
             this.params.p = 1
             this.goodsList = []
             this.isGetMore = true
             this.getGoodList();
-            this.cateClickState = false
+            this.cateClickState = false //先将分类点击状态设置为false,
             setTimeout(() => {
-                this.cateClickState = true
+                //500毫秒之后再设置为true，防止点击分类之后页面滚动条发生变化导致触底再次加载数据
+                this.cateClickState = true 
             },500)
         },
         scrollFun() {
             if(this.cateClickState == true) {
-                //可滚动容器的高度
-                let innerHeight = document.getElementById('home').clientHeight;
-                // 屏幕的高度
-                let outerHeight = document.documentElement.clientHeight;
                 // 滚动过的高度
                 let scrollTop = -(document.getElementsByTagName('body')[0].getBoundingClientRect().top);
-            
-                if (innerHeight <= (outerHeight + scrollTop)) {
-                    this.getGoodList();  
+
+                {   //当前代码块处理首页商品分类滚动监听定位顶部
+                    let catesTop = this.$refs.catesTop.catesTop;
+                    let searchHeight = document.getElementById('position').getBoundingClientRect().height;
+                    catesTop -= searchHeight
+                    // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
+                    if (scrollTop >= catesTop) {
+                        this.cateBarState = true
+                    } else {
+                        this.cateBarState = false
+                    }
                 }
+
+                {
+                    //可滚动容器的高度
+                    let innerHeight = document.getElementById('home').clientHeight;
+                    // 屏幕的高度
+                    let outerHeight = document.documentElement.clientHeight;
+                    //当前判断页面是否触底
+                    if (innerHeight <= (outerHeight + scrollTop)) { 
+                        this.getGoodList();  
+                    }
+                }
+                
             }
         }
     },
@@ -154,6 +175,7 @@ export default {
         .then(() => {
             this.getGoodList()
         })
+        // console.log(this.$refs.catesTop);
     },
     components:{
         SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods

@@ -1,9 +1,20 @@
 <template>
     <div id="home-goods">
+        <div class="cate-fixed" v-show="cateBarState">
+            <div class="good-cate" ref="cateBox">
+                <ul>
+                    <li :class="[index == cateIndex ? 'cate-active' : '']" 
+                    v-for="(cate, index) in categroy" 
+                    :key="index" @click="getGoods(cate.id, index)">
+                        {{cate.category_name}}
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="model-logo">
             <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_biaotitemai@2x.png" alt="">
         </div>
-        <div class="good-cate" ref="cateBox">
+        <div class="good-cate" ref="cateBox" id="catesTop">
             <ul>
                 <li :class="[index == cateIndex ? 'cate-active' : '']" 
                 v-for="(cate, index) in categroy" 
@@ -36,11 +47,12 @@
 <script>
 export default {
     name:'home-goods',
-    props:['categroy', 'goodsList'],
+    props:['categroy', 'goodsList', 'cateBarState'],
     data() {
         return {
-            cateIndex:0,
-            cateXList:[]
+            cateIndex:0,    //初始化默认分类
+            cateXList:[],   //默认商品分类每个li距离左侧距离集合
+            catesTop:0      //默认商品分类距离顶部距离
         }
     },
     methods: {
@@ -56,11 +68,12 @@ export default {
                 left -= 375 / 2;
             }
             cateBox.scrollLeft = left
-            this.$emit('getCatId',id)
+            this.$emit('getCatId',id) //将子组件获取的分类id传给父组件
         },
-        getEleX() {
+        getEleX() { //获取商品分类每个li距离左边的位置
             const cateXList = new Array();
             const cateList = this.$refs.cate;
+            console.log(cateList);
             const cateXOne = cateList[0].getBoundingClientRect().left;
             cateList.forEach(element => {
                 cateXList.push(element.getBoundingClientRect().left - cateXOne);
@@ -69,11 +82,73 @@ export default {
         }
     },
     mounted() {
-        this.getEleX()
+        this.$nextTick(function () { //强制性组件渲染完毕之后再去执行
+            this.getEleX()  //初始化获取商品分类每个li距离左边的位置
+            this.catesTop = catesTop.getBoundingClientRect().top //获取初始化商品分类距离顶部位置
+        })
+        
     },
 }
 </script>
 <style scoped>
+
+#home-goods {
+    width: 100%;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    background: #f3f5f9;
+}
+.cate-fixed {
+    position: fixed;
+    left: 0;
+    top: 0.7rem;
+    background: #ffffff;
+    z-index: 11;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    border-bottom: 0.02rem solid #f1f1f1;
+    width: 100%;
+}
+/* 商品分类 */
+.good-cate {
+    width: 100%;
+    overflow-x: scroll;  
+}
+.good-cate ul{
+    white-space:nowrap;
+}
+.good-cate ul li {
+    display: inline-block;
+    height: 0.7rem;
+    line-height: 0.7rem;
+    position:relative;
+    padding:0 0.16rem;
+    font-size:0.3rem;
+    color:#333;
+    font-weight: bold;
+}
+
+.good-cate ul .cate-active {
+    font-size: 0.32rem;
+    color:#333;
+    font-weight: bold;
+}
+.good-cate ul .cate-active::after {
+    display: block;
+    background: #f54440;
+    content: '';
+    width: 60%;
+    height: 0.06rem;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 10;
+    border-radius: 0.06rem;
+}
+/* 商品列表 */
 .goods-box {
     width: 100%;
     margin-top: 0.2rem;
@@ -133,52 +208,5 @@ export default {
 .goods-cont .old-price .line-price {
     text-decoration-line: line-through;
 }
-
-#home-goods {
-    width: 100%;
-    padding: 0 0.2rem;
-    box-sizing: border-box;
-    background: #f3f5f9;
-}
-/* 商品分类 */
-.good-cate {
-    width: 100%;
-    overflow-x: scroll;  
-}
-.good-cate ul{
-    white-space:nowrap;
-}
-.good-cate ul li {
-    display: inline-block;
-    height: 0.7rem;
-    line-height: 0.7rem;
-    position:relative;
-    padding:0 0.16rem;
-    font-size:0.3rem;
-    color:#333;
-}
-
-.good-cate ul .cate-active {
-    font-size: 0.32rem;
-    color:#333;
-    font-weight: bold;
-}
-.good-cate ul .cate-active::after {
-    display: block;
-    background: #f54440;
-    content: '';
-    width: 60%;
-    height: 0.06rem;
-    text-align: center;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: 0 auto;
-    z-index: 10;
-    border-radius: 0.06rem;
-}
-/* 商品列表 */
-
 </style>
 
