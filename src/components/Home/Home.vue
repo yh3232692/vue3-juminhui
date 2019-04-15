@@ -62,11 +62,15 @@ export default {
                 cat_id:'',
                 market_id:'',
                 p:1
-            }
+            },
+            isGetMore:true,
+            cateClickState:true
         }
     },
     methods: {
         getGoodList () {
+            if (!this.isGetMore) return false;
+
             this.$post('/api/NewIndex/getGoods',{
                 cat_id:this.params.cat_id,
                 market_id:this.params.market_id,
@@ -74,11 +78,12 @@ export default {
             })
             .then((response) => {
                 if (response.status == 1) {
-                    ++this.params.p
                     const goodsList = response.result;
                     if (goodsList.length > 0) {
+                        ++this.params.p
                         this.goodsList = this.goodsList.concat(goodsList)
-                    } else {
+                    } else {    //当前分类的分页下暂无数据
+                        this.isGetMore = false  //禁止再次请求数据
                         console.log('当前分页暂无数据');
                         return false;
                     }
@@ -92,11 +97,30 @@ export default {
             this.params.cat_id = id
             this.params.p = 1
             this.goodsList = []
+            this.isGetMore = true
             this.getGoodList();
+            this.cateClickState = false
+            setTimeout(() => {
+                this.cateClickState = true
+            },500)
+        },
+        scrollFun() {
+            if(this.cateClickState == true) {
+                //可滚动容器的高度
+                let innerHeight = document.getElementById('home').clientHeight;
+                // 屏幕的高度
+                let outerHeight = document.documentElement.clientHeight;
+                // 滚动过的高度
+                let scrollTop = -(document.getElementsByTagName('body')[0].getBoundingClientRect().top);
+            
+                if (innerHeight <= (outerHeight + scrollTop)) {
+                    this.getGoodList();  
+                }
+            }
         }
     },
     created() {
-        
+        window.addEventListener('scroll',this.scrollFun)
     },
     mounted() {
         this.$post('/api/NewIndex/homeIndexnew_four',{
@@ -129,26 +153,6 @@ export default {
         })
         .then(() => {
             this.getGoodList()
-            // this.$post('/api/NewIndex/getGoods',{
-            //     cat_id:this.params.cat_id,
-            //     market_id:this.params.market_id,
-            //     p:this.params.p
-            // })
-            // .then((response) => {
-            //     if (response.status == 1) {
-            //         ++this.params.p
-            //         const goodsList = response.result;
-            //         if (goodsList.length > 0) {
-            //             this.goodsList = this.goodsList.concat(goodsList)
-            //         } else {
-            //             console.log('当前分页暂无数据');
-            //             return false;
-            //         }
-                    
-            //     } else {
-            //         return false
-            //     }
-            // })
         })
     },
     components:{

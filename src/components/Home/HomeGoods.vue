@@ -45,6 +45,7 @@ export default {
     },
     methods: {
         getGoods(id,index) { //获取当前点击的是哪个分类
+            if (index == this.cateIndex) return false;
             this.cateIndex = index
             const cateBox = this.$refs.cateBox;
             let left = this.cateXList[index];
