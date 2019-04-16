@@ -12,6 +12,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import {post,fetch} from './https.js'
 import store from './store/store.js'
+import router from './router/index.js'
 
 //定义全局变量
 Vue.prototype.$post   = post;  //post
@@ -23,4 +24,5 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   store,
+  router
 }).$mount('#app')

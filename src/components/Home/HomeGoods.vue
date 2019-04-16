@@ -73,7 +73,7 @@ export default {
         getEleX() { //获取商品分类每个li距离左边的位置
             const cateXList = new Array();
             const cateList = this.$refs.cate;
-            console.log(cateList);
+            // console.log(cateList);
             const cateXOne = cateList[0].getBoundingClientRect().left;
             cateList.forEach(element => {
                 cateXList.push(element.getBoundingClientRect().left - cateXOne);

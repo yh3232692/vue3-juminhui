@@ -193,5 +193,8 @@ export default {
 .model-logo img {
     height: 0.4rem;
 }
+#home{
+    padding-bottom: 1rem;
+}
 </style>
 

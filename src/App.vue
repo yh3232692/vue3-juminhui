@@ -1,19 +1,21 @@
 <template>
   <div id="app">
     <loading v-show="isShow"></loading>
-    <home></home>
+    <router-view></router-view>
+    <home-tab></home-tab>
   </div>
 </template>
 
 <script>
 import Home from './components/Home/Home.vue'
 import Loading from './components/common/Loading.vue'
+import HomeTab from '@/components/tabbar/HomeTab.vue'
 import {mapState,mapGetters,mapActions} from 'vuex'
 
 export default {
   name: 'app',
   components: {
-    Home,Loading
+    Home,Loading,HomeTab
   },
   computed: {
     // ...mapState({   //第一种写法

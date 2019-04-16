@@ -23,6 +23,9 @@ export default {
 </script>
 
 <style scoped>
+#home-cate-icon {
+    background:#fff
+}
 .big-cate {
     width: 100%;
     display: flex;
