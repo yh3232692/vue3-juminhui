@@ -101,7 +101,7 @@ export default {
 .cate-fixed {
     position: fixed;
     left: 0;
-    top: 0.7rem;
+    top: 0.8rem;
     background: #ffffff;
     z-index: 11;
     padding: 0 0.2rem;

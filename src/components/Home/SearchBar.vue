@@ -15,16 +15,29 @@
         </div>
         <!-- 搜索框 -->
         <div class="search-box">
-            <div class="searchs">
+            <div class="searchs" ref="searchs">
                 <img src="../../assets/icons/home-search.png" alt="">
                 <span>您需要什么商品与服务？</span>
             </div>
         </div>
+        
     </div>
 </template>
 <script>
 export default {
-    name:'search-bar'
+    name:'search-bar',
+    data() {
+        return {
+            searchTop:0,
+            searchWidth:0
+        }
+    },
+    mounted() {
+        this.$nextTick(function () { //强制性组件渲染完毕之后再去执行
+            this.searchTop = this.$refs.searchs.getBoundingClientRect().top;
+            this.searchWidth = this.$refs.searchs.getBoundingClientRect().width;
+        })
+    },
 }
 </script>
 <style scoped>
@@ -45,6 +58,7 @@ export default {
         top: 0;
         z-index: 11;
         padding: 0 0.2rem;
+        padding-bottom: 0.1rem;
         box-sizing: border-box;
     }
     .position {
@@ -87,20 +101,34 @@ export default {
         margin-left: 0.26rem;
     }
     .search-box{
-        width: 100%;
+        /* width: 100%;
         padding: 0.1rem 0 0.14rem 0;
         box-sizing: border-box;
-        padding-top: 0.7rem;
+        padding-top: 0.8rem; */
+        width: 100%;
+        height: 1.58rem;
     }
     .searchs {
-        width: 100%;
+        /* width: 100%;
         height: 0.64rem;
         background: rgba(255, 255, 255, 0.9);
         padding-left:0.5rem;
         border-radius: 0.08rem;
         box-sizing: border-box;
         display: flex;
+        align-items: center; */
+        width: 7.1rem;
+        height: 0.64rem;
+        background: rgba(255, 255, 255, 1);
+        padding-left:0.5rem;
+        border-radius: 0.08rem;
+        box-sizing: border-box;
+        display: flex;
         align-items: center;
+        position: fixed;
+        left: 0.2rem;
+        top: 0.8rem;
+        z-index: 3000;
     }
     .searchs img {
         display: block;

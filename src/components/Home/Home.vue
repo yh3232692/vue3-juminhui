@@ -1,7 +1,7 @@
 <template>
     <div id="home">
         <!-- 首页顶部搜索组件 -->
-        <search-bar></search-bar>
+        <search-bar ref="searchs"></search-bar>
         <!-- 首页轮播 -->
         <home-swiper :sliders="slider"></home-swiper>
         <!-- 首页图标入口 -->
@@ -116,6 +116,7 @@ export default {
 
                 {   //当前代码块处理首页商品分类滚动监听定位顶部
                     let catesTop = this.$refs.catesTop.catesTop;
+                    // console.log(catesTop);
                     let searchHeight = document.getElementById('position').getBoundingClientRect().height;
                     catesTop -= searchHeight
                     // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
@@ -133,8 +134,24 @@ export default {
                     let outerHeight = document.documentElement.clientHeight;
                     //当前判断页面是否触底
                     if (innerHeight <= (outerHeight + scrollTop)) { 
-                        this.getGoodList();  
+                        this.getGoodList();
                     }
+                }
+
+                {
+                    let searchEl = this.$refs.searchs.$refs.searchs;
+                    let searchTop = this.$refs.searchs.searchTop;
+                    let searchWidth = this.$refs.searchs.searchWidth;
+
+                    if (searchTop <= scrollTop) {
+                        searchEl.style.top = '3px'
+                        searchEl.style.width = '70%';
+                    } else {
+                        searchEl.style.top = (searchTop - scrollTop + 3) + 'px'  
+                        searchEl.style.width = (searchWidth - scrollTop*2.4) + 'px' 
+                    }
+  
+                    console.log(searchTop,scrollTop) 
                 }
                 
             }
