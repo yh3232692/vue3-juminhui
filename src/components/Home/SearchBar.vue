@@ -128,7 +128,7 @@ export default {
         position: fixed;
         left: 0.2rem;
         top: 0.8rem;
-        z-index: 3000;
+        z-index: 12;
     }
     .searchs img {
         display: block;

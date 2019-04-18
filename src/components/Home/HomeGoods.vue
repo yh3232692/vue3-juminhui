@@ -84,7 +84,7 @@ export default {
     mounted() {
         this.$nextTick(function () { //强制性组件渲染完毕之后再去执行
             this.getEleX()  //初始化获取商品分类每个li距离左边的位置
-            this.catesTop = catesTop.getBoundingClientRect().top //获取初始化商品分类距离顶部位置
+            this.catesTop = document.getElementById('catesTop').getBoundingClientRect().top //获取初始化商品分类距离顶部位置
         })
         
     },

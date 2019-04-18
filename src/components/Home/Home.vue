@@ -22,7 +22,7 @@
             :goodsList="goodsList" 
             @getCatId="getCatId"
             :cateBarState="cateBarState"
-            ref="catesTop"
+            ref="specialGoods"
             v-if="flag">
         </home-goods>
     </div>
@@ -115,12 +115,12 @@ export default {
                 let scrollTop = -(document.getElementsByTagName('body')[0].getBoundingClientRect().top);
 
                 {   //当前代码块处理首页商品分类滚动监听定位顶部
-                    let catesTop = this.$refs.catesTop.catesTop;
-                    // console.log(catesTop);
+                    let catesTops = this.$refs.specialGoods.catesTop;
+                    console.log(catesTops);
                     let searchHeight = document.getElementById('position').getBoundingClientRect().height;
-                    catesTop -= searchHeight
+                    catesTops -= searchHeight
                     // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
-                    if (scrollTop >= catesTop) {
+                    if (scrollTop >= catesTops) {
                         this.cateBarState = true
                     } else {
                         this.cateBarState = false
@@ -193,6 +193,9 @@ export default {
             this.getGoodList()
         })
         // console.log(this.$refs.catesTop);
+    },
+    destroyed() {
+        window.removeEventListener('scroll',this.scrollFun)
     },
     components:{
         SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods
