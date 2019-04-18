@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home/Home'
 import Chain from '@/components/chain/Chain'
-import HuiHome from '@/components/huiHome/HuiHome'
 import Cart from '@/components/cart/Cart'
 import Person from '@/components/person/Person'
 
@@ -21,11 +20,6 @@ export default new Router({
             path:'/chain',
             name:'Chain',
             component:Chain
-        },
-        {
-            path:'/huiHome',
-            name:'HuiHome',
-            component:HuiHome
         },
         {
             path:'/cart',

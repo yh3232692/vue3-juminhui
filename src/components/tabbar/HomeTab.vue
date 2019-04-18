@@ -26,12 +26,6 @@ export default {
                     selectIconPath:require('./../../assets/icons/tabbar/lian1S.png')
                 },
                 {
-                    text:'惠到家',
-                    path:'/huiHome',
-                    iconPath:require('./../../assets/icons/tabbar/hui1D.png'),
-                    selectIconPath:require('./../../assets/icons/tabbar/hui1S.png')
-                },
-                {
                     text:'购物车',
                     path:'/cart',
                     iconPath:require('./../../assets/icons/tabbar/buy1D.png'),
@@ -49,7 +43,6 @@ export default {
     },
     watch:{
         $route(to,from){
-            console.log(to.path);
             this.currentPath = to.path
         }
     },
