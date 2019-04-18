@@ -158,7 +158,7 @@ export default {
         }
     },
     created() {
-        window.addEventListener('scroll',this.scrollFun)
+        // window.addEventListener('scroll',this.scrollFun)
     },
     mounted() {
         this.$post('/api/NewIndex/homeIndexnew_four',{
@@ -194,8 +194,24 @@ export default {
         })
         // console.log(this.$refs.catesTop);
     },
-    destroyed() {
-        window.removeEventListener('scroll',this.scrollFun)
+    // destroyed() {
+    //     window.removeEventListener('scroll',this.scrollFun)
+    // },
+    activated() {
+        window.addEventListener('scroll',this.scrollFun)        
+    },
+    deactivated() {
+        window.removeEventListener('scroll',this.scrollFun)        
+    },
+    scrollBehavior (to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            if (from.meta.keepAlive) {
+                from.meta.savedPosition = document.body.scrollTop;
+            }
+            return { x: 0, y: to.meta.savedPosition || 0 }
+        }
     },
     components:{
         SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods

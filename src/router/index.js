@@ -14,22 +14,26 @@ export default new Router({
         {
             path:'/',
             name:'Home',
-            component:Home
+            component:Home,
+            meta: { keepAlive: true },
         },
         {
             path:'/chain',
             name:'Chain',
-            component:Chain
+            component:Chain,
+            meta: { keepAlive: true}
         },
         {
             path:'/cart',
             name:'Cart',
-            component:Cart
+            component:Cart,
+            meta: { keepAlive: true}
         },
         {
             path:'/person',
             name:'Person',
-            component:Person
+            component:Person,
+            meta: { keepAlive: true}
         },
     ],
     mode:"history"
