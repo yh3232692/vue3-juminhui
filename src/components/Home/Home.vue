@@ -109,14 +109,13 @@ export default {
                 this.cateClickState = true 
             },500)
         },
-        scrollFun() {
+        scrollFun() {   //滚动监听
             if(this.cateClickState == true) {
                 // 滚动过的高度
-                let scrollTop = -(document.getElementsByTagName('body')[0].getBoundingClientRect().top);
+                let scrollTop = -(document.body.getBoundingClientRect().top);
 
                 {   //当前代码块处理首页商品分类滚动监听定位顶部
                     let catesTops = this.$refs.specialGoods.catesTop;
-                    console.log(catesTops);
                     let searchHeight = document.getElementById('position').getBoundingClientRect().height;
                     catesTops -= searchHeight
                     // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
@@ -127,7 +126,7 @@ export default {
                     }
                 }
 
-                {
+                {   //当前代码块监听页面触底加载分页数据
                     //可滚动容器的高度
                     let innerHeight = document.getElementById('home').clientHeight;
                     // 屏幕的高度
@@ -138,7 +137,7 @@ export default {
                     }
                 }
 
-                {
+                {   //当前代码块处理搜索栏滚动变化
                     let searchEl = this.$refs.searchs.$refs.searchs;
                     let searchTop = this.$refs.searchs.searchTop;
                     let searchWidth = this.$refs.searchs.searchWidth;
@@ -151,7 +150,6 @@ export default {
                         searchEl.style.width = (searchWidth - scrollTop*2.4) + 'px' 
                     }
   
-                    console.log(searchTop,scrollTop) 
                 }
                 
             }
@@ -161,7 +159,7 @@ export default {
         // window.addEventListener('scroll',this.scrollFun)
     },
     mounted() {
-        this.$post('/api/NewIndex/homeIndexnew_four',{
+        this.$post('/api/NewIndex/homeIndexnew_four',{ //加载首页数据
             latitude:this.params.latitude,
             longitude:this.params.longitude,
             user_id:this.params.user_id,
@@ -197,21 +195,11 @@ export default {
     // destroyed() {
     //     window.removeEventListener('scroll',this.scrollFun)
     // },
-    activated() {
+    activated() {   
         window.addEventListener('scroll',this.scrollFun)        
     },
     deactivated() {
         window.removeEventListener('scroll',this.scrollFun)        
-    },
-    scrollBehavior (to, from, savedPosition) {
-        if (savedPosition) {
-            return savedPosition
-        } else {
-            if (from.meta.keepAlive) {
-                from.meta.savedPosition = document.body.scrollTop;
-            }
-            return { x: 0, y: to.meta.savedPosition || 0 }
-        }
     },
     components:{
         SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods

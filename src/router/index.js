@@ -36,5 +36,17 @@ export default new Router({
             meta: { keepAlive: true}
         },
     ],
-    mode:"history"
+    mode:"history",
+    scrollBehavior (to, from, savedPosition) {
+        // console.log(savedPosition);
+        if (savedPosition) {
+		    return savedPosition
+		} else {
+			if (from.meta.keepAlive) {
+                from.meta.savedPosition = document.documentElement.scrollTop || document.body.scrollTop;
+				console.log(from.meta.savedPosition);
+			}
+		    return { x: 0, y: to.meta.savedPosition || 0 }
+		}
+    },
 })
