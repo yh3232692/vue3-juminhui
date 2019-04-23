@@ -258,13 +258,13 @@ export default {
 .tehui-list li {
     text-align: center;
     /*动画名称*/
-    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
     /*动画持续时间*/
-    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
     /*动画次数*/
-    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
     /*延迟时间*/
-    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
 }
 .tehui-list li img{
     width: 1.08rem;
@@ -433,7 +433,7 @@ export default {
 }
 
 
-@-webkit-keyframes fadeIn {
+@keyframes fadeIn {
     0% {
         opacity: 0; /*初始状态 透明度为0*/
     }
