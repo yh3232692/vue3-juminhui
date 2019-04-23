@@ -29,8 +29,14 @@
 </template>
 
 <script>
+import ScrollPosition from '@/lib/scroll-position'
+
+
 export default {
-    name:'cart'
+    name:'cart',
+    activated() {
+        ScrollPosition.get.call(this);
+    },
 }
 </script>
 

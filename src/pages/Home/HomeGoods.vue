@@ -1,7 +1,7 @@
 <template>
     <div id="home-goods">
         <div class="cate-fixed" v-show="cateBarState">
-            <div class="good-cate" ref="cateBox">
+            <div class="good-cate" ref="cateBox2">
                 <ul>
                     <li :class="[index == cateIndex ? 'cate-active' : '']" 
                     v-for="(cate, index) in categroy" 
@@ -60,14 +60,18 @@ export default {
             if (index == this.cateIndex) return false;
             this.cateIndex = index
             const cateBox = this.$refs.cateBox;
+            const cateBox2 = this.$refs.cateBox2;
+            console.log(cateBox)
+            console.log(cateBox2)
             let left = this.cateXList[index];
             if (left < 375 / 2) {
                 left = 0;
             }
             if (left > 375 / 2) {
                 left -= 375 / 2;
-            }
+            }        
             cateBox.scrollLeft = left
+            cateBox2.scrollLeft = left
             this.$emit('getCatId',id) //将子组件获取的分类id传给父组件
         },
         getEleX() { //获取商品分类每个li距离左边的位置

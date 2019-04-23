@@ -10,19 +10,24 @@
 
 import Vue from 'vue'
 import App from './App.vue'
-import {post,fetch} from './https.js'
+import { post,fetch } from './https.js'
 import store from './store/store.js'
 import router from './router/index.js'
+import ScrollPosition from '@/lib/scroll-position.js'
 
 //定义全局变量
-Vue.prototype.$post   = post;  //post
-Vue.prototype.$fetch  = fetch; //fetch
-
+Vue.prototype.$post = post; //post
+Vue.prototype.$fetch = fetch; //fetch
 
 Vue.config.productionTip = false
+router.beforeEach((to, from, next) => {
+	// 保存滚动条位置
+	ScrollPosition.save(from.path);
+	next();
+});
 
 new Vue({
-  render: h => h(App),
-  store,
-  router
+	render: h => h(App),
+	store,
+	router
 }).$mount('#app')

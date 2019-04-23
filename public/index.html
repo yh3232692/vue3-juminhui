@@ -1,57 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>聚民惠</title>
-    <script>
-      /**
-      * 根据基础字体大小 和 效果图宽度设置 根节点字体大小
-      * @param baseFontSize 浏览器默认字体大小 [注]浏览器最小字体为12像素，所以该值必需大于等于12
-      * @param baseWidth 设计稿的尺寸
-      */
-      function initFontSize(baseFontSize, baseWidth){
-        // 获取当前屏幕宽度
-        var clientWidth = document.documentElement.clientWidth || window.innerWidth;
-        // 根据宽度计算根节点字体大小
-        var size = Math.floor( clientWidth / baseWidth * baseFontSize );
-  
-  
-        document.querySelector('html').style.fontSize = size + 'px';
-      }
-      //初始化 字体100px , 设计稿宽750px
-      initFontSize(100, 750);
-      // 窗口大小改变时设置根节点字体大小，通过字体大小来控制页面元素尺寸的缩放
-      window.addEventListener('resize', initFontSize);
-    </script>
-  
-  </head>
-  <style>
-    html{
-      /* font-size: 100px; */
-    }
-    html,html *{
-      margin: 0;
-      padding: 0;
-    }
-    li {
-      list-style: none;
-    }
-    .c-red {
-      color: #f54440;
-    }
-    .c-zise{
-      color: #a657ff;
-    }
-    
-  </style>
-  <body>
-    <noscript>
-      <strong>We're sorry but vue3-juminhui doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link rel="icon" href="<%= BASE_URL %>favicon.ico">
+	<link rel="stylesheet" href="../src/assets/css/asset.css">
+	<title>聚民惠</title>
+	<script>
+		/**
+		 * 根据基础字体大小 和 效果图宽度设置 根节点字体大小
+		 * @param baseFontSize 浏览器默认字体大小 [注]浏览器最小字体为12像素，所以该值必需大于等于12
+		 * @param baseWidth 设计稿的尺寸
+		 */
+		function initFontSize(baseFontSize, baseWidth) {
+			// 获取当前屏幕宽度
+			var clientWidth = document.documentElement.clientWidth || window.innerWidth;
+			// 根据宽度计算根节点字体大小
+			var size = Math.floor(clientWidth / baseWidth * baseFontSize);
+
+
+			document.querySelector('html').style.fontSize = size + 'px';
+		}
+		//初始化 字体100px , 设计稿宽750px
+		initFontSize(100, 750);
+		// 窗口大小改变时设置根节点字体大小，通过字体大小来控制页面元素尺寸的缩放
+		window.addEventListener('resize', initFontSize);
+	</script>
+
+</head>
+<style>
+	html {
+		/* font-size: 100px; */
+	}
+
+	html,
+	html * {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		list-style: none;
+	}
+
+	.c-red {
+		color: #f54440;
+	}
+
+	.c-zise {
+		color: #a657ff;
+	}
+</style>
+
+<body>
+	<noscript>
+		<strong>We're sorry but vue3-juminhui doesn't work properly without JavaScript enabled. Please enable it to
+			continue.</strong>
+	</noscript>
+	<div id="app"></div>
+	<!-- built files will be auto injected -->
+</body>
+
 </html>

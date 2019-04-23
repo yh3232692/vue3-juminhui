@@ -35,6 +35,7 @@ import HomeSwiper from './HomeSwiper.vue'
 import HomeCateIcon from './HomeCateIcon.vue'
 import HomeActive from './HomeActive.vue'
 import HomeGoods from './HomeGoods.vue'
+import ScrollPosition from '@/lib/scroll-position.js'
 
 // vue2实现数据请求显示loading图
 
@@ -155,9 +156,6 @@ export default {
             }
         }
     },
-    created() {
-        // window.addEventListener('scroll',this.scrollFun)
-    },
     mounted() {
         this.$post('/api/NewIndex/homeIndexnew_four',{ //加载首页数据
             latitude:this.params.latitude,
@@ -192,13 +190,11 @@ export default {
         })
         // console.log(this.$refs.catesTop);
     },
-    // destroyed() {
-    //     window.removeEventListener('scroll',this.scrollFun)
-    // },
-    activated() {   
-        window.addEventListener('scroll',this.scrollFun)        
+    activated() {   //keep-alive缓存初始化
+        ScrollPosition.get.call(this);       
+        window.addEventListener('scroll',this.scrollFun)     
     },
-    deactivated() {
+    deactivated() { //keep-alive页面失活的时候触发
         window.removeEventListener('scroll',this.scrollFun)        
     },
     components:{

@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import Home from "./components/Home/Home.vue";
-import Loading from "./components/common/Loading.vue";
+import Home from "./pages/Home/Home.vue";
+import Loading from "@/components/common/Loading.vue";
 import HomeTab from "@/components/tabbar/HomeTab.vue";
 import { mapState, mapGetters, mapActions } from "vuex";
 

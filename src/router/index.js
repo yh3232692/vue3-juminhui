@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home/Home'
-import Chain from '@/components/chain/Chain'
-import Cart from '@/components/cart/Cart'
-import Person from '@/components/person/Person'
+import Home from '@/pages/Home/Home'
+import Chain from '@/pages/chain/Chain'
+import Cart from '@/pages/cart/Cart'
+import Person from '@/pages/person/Person'
 
 
 
@@ -39,14 +39,14 @@ export default new Router({
     mode:"history",
     scrollBehavior (to, from, savedPosition) {
         // console.log(savedPosition);
-        if (savedPosition) {
-		    return savedPosition
-		} else {
-			if (from.meta.keepAlive) {
-                from.meta.savedPosition = document.documentElement.scrollTop || document.body.scrollTop;
-				console.log(from.meta.savedPosition);
-			}
-		    return { x: 0, y: to.meta.savedPosition || 0 }
-		}
+        // if (savedPosition) {
+		//     return savedPosition
+		// } else {
+		// 	if (from.meta.keepAlive) {
+        //         from.meta.savedPosition = document.documentElement.scrollTop || document.body.scrollTop;
+		// 		console.log(from.meta.savedPosition);
+		// 	}
+		//     return { x: 0, y: to.meta.savedPosition || 0 }
+		// }
     },
 })

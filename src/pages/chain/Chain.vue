@@ -35,8 +35,13 @@
 </template>
 
 <script>
+import ScrollPosition from '@/lib/scroll-position.js'
+
 export default {
-    name:'chain'
+    name:'chain',
+    activated() {
+        ScrollPosition.get.call(this);        
+    },
 }
 </script>
 
