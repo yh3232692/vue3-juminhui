@@ -18,12 +18,6 @@ export default new Router({
             meta: { keepAlive: true },
         },
         {
-            path:'/chain',
-            name:'Chain',
-            component:Chain,
-            meta: { keepAlive: true}
-        },
-        {
             path:'/cart',
             name:'Cart',
             component:Cart,
@@ -37,16 +31,4 @@ export default new Router({
         },
     ],
     mode:"history",
-    scrollBehavior (to, from, savedPosition) {
-        // console.log(savedPosition);
-        // if (savedPosition) {
-		//     return savedPosition
-		// } else {
-		// 	if (from.meta.keepAlive) {
-        //         from.meta.savedPosition = document.documentElement.scrollTop || document.body.scrollTop;
-		// 		console.log(from.meta.savedPosition);
-		// 	}
-		//     return { x: 0, y: to.meta.savedPosition || 0 }
-		// }
-    },
 })

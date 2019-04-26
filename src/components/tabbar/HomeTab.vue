@@ -20,12 +20,6 @@ export default {
                     selectIconPath:require('../../assets/icons/tabbar/index1S.png')
                 },
                 {
-                    text:'运营商',
-                    path:'/chain',
-                    iconPath:require('./../../assets/icons/tabbar/lian1D.png'),
-                    selectIconPath:require('./../../assets/icons/tabbar/lian1S.png')
-                },
-                {
                     text:'购物车',
                     path:'/cart',
                     iconPath:require('./../../assets/icons/tabbar/buy1D.png'),
