@@ -1,9 +1,9 @@
 <template>
 	<div id="home-swiper">
 		<swiper :options="swiperOption">
-		<swiper-slide v-for="(slide, index) in sliders" :key="index">
-			<img :src="slide.image" alt>
-		</swiper-slide>
+			<swiper-slide v-for="(slide, index) in sliders" :key="index">
+				<img :src="slide.image" alt>
+			</swiper-slide>
 		</swiper>
 	</div>
 </template>
@@ -26,6 +26,7 @@ export default {
 				loop: true, //开启loop（无限循环播放）
 				on: {
 					tap: function(e) {
+						console.log(e);
 						alert(this.realIndex); //获取当前点击索引
 					}
 				}
@@ -48,7 +49,7 @@ export default {
 	height: 2.4rem;
 	background: #cccccc;
 }
-img {
+.swiper-container img {
 	width: 100%;
 	height: 2.4rem;
 	display: block;

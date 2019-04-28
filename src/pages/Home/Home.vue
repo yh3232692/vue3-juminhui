@@ -16,15 +16,15 @@
             :market="market"
             v-if="flag">
         </home-active>
-        <!-- 首页惠民特卖商品 -->
-        <home-goods 
-            :categroy="categroy" 
-            :goodsList="goodsList" 
-            @getCatId="getCatId"
-            :cateBarState="cateBarState"
-            ref="specialGoods"
-            v-if="flag">
-        </home-goods>
+        <!-- 惠民特卖商品部分 -->
+        <div id="home-goods">
+            <div class="model-logo">
+                <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_biaotitemai@2x.png" alt="">
+            </div>
+            <!-- 惠民特卖商品分类 -->
+            <cate-scroll :categroy="categroy" @clickCate="getCateList"></cate-scroll>
+            <home-goods :goodsList="goodsList"></home-goods>
+        </div>
     </div>
 </template>
 
@@ -34,7 +34,8 @@ import SearchBar from './SearchBar.vue'
 import HomeSwiper from './HomeSwiper.vue'
 import HomeCateIcon from './HomeCateIcon.vue'
 import HomeActive from './HomeActive.vue'
-import HomeGoods from './HomeGoods.vue'
+import CateScroll from '@/components/cateScroll/CateScroll.vue'
+import HomeGoods from '@/components/homeGoods/HomeGoods.vue'
 import ScrollPosition from '@/lib/scroll-position.js'
 
 // vue2实现数据请求显示loading图
@@ -98,7 +99,7 @@ export default {
                 }
             })
         },
-        getCatId(id) {  //通过获取到的分类id重新获取数据
+        getCateList(id) {  //通过获取到的分类id重新获取数据
             this.params.cat_id = id
             this.params.p = 1
             this.goodsList = []
@@ -115,17 +116,17 @@ export default {
                 // 滚动过的高度
                 let scrollTop = -(document.body.getBoundingClientRect().top);
 
-                {   //当前代码块处理首页商品分类滚动监听定位顶部
-                    let catesTops = this.$refs.specialGoods.catesTop;
-                    let searchHeight = document.getElementById('position').getBoundingClientRect().height;
-                    catesTops -= searchHeight
-                    // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
-                    if (scrollTop >= catesTops) {
-                        this.cateBarState = true
-                    } else {
-                        this.cateBarState = false
-                    }
-                }
+                // {   //当前代码块处理首页商品分类滚动监听定位顶部
+                //     let catesTops = this.$refs.specialGoods.catesTop;
+                //     let searchHeight = document.getElementById('position').getBoundingClientRect().height;
+                //     catesTops -= searchHeight
+                //     // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
+                //     if (scrollTop >= catesTops) {
+                //         this.cateBarState = true
+                //     } else {
+                //         this.cateBarState = false
+                //     }
+                // }
 
                 {   //当前代码块监听页面触底加载分页数据
                     //可滚动容器的高度
@@ -198,7 +199,7 @@ export default {
         window.removeEventListener('scroll',this.scrollFun)        
     },
     components:{
-        SearchBar, HomeSwiper, HomeCateIcon, HomeActive, HomeGoods
+        SearchBar, HomeSwiper, HomeCateIcon, HomeActive, CateScroll, HomeGoods
     },
 }
 
@@ -216,5 +217,12 @@ export default {
 #home{
     padding-bottom: 1rem;
 }
+#home-goods {
+    width: 100%;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    background: #f3f5f9;
+}
+
 </style>
 
