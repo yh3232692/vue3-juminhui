@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <loading v-show="isShow"></loading>
+    <loading v-show="isShow && isOpen"></loading>
     <home-tab></home-tab>
     <transition name="router-fade" mode="out-in">
       <keep-alive>
@@ -32,7 +32,7 @@ export default {
     // }),
     ...mapGetters("loadingState", [
       //第二种写法
-      "isShow"
+      "isShow","isOpen"
     ])
   }
 };

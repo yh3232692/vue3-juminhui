@@ -17,7 +17,7 @@
             v-if="flag">
         </home-active>
         <!-- 惠民特卖商品部分 -->
-        <div id="home-goods">
+        <div id="home-goods" v-if="flag">
             <div class="model-logo">
                 <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_biaotitemai@2x.png" alt="">
             </div>
@@ -37,8 +37,7 @@ import HomeActive from './HomeActive.vue'
 import CateScroll from '@/components/cateScroll/CateScroll.vue'
 import HomeGoods from '@/components/homeGoods/HomeGoods.vue'
 import ScrollPosition from '@/lib/scroll-position.js'
-
-// vue2实现数据请求显示loading图
+import store from '@/store/store.js'
 
 export default {
     name:'home',
@@ -73,7 +72,7 @@ export default {
         }
     },
     methods: {
-        getGoodList () { //获取分类下的商品数据
+        getGoodList (eventName='') { //获取分类下的商品数据
             // 如果当前isGetMore为false，则无需加载分页数据，否则需要加载
             if (!this.isGetMore) return false;
 
@@ -87,7 +86,11 @@ export default {
                     const goodsList = response.result;
                     if (goodsList.length > 0) {
                         ++this.params.p
-                        this.goodsList = this.goodsList.concat(goodsList)
+                        if (eventName == 'click') { //如果当前是点击分类请求数据
+                            this.goodsList = goodsList;
+                        } else {
+                            this.goodsList = this.goodsList.concat(goodsList)   
+                        }
                     } else {    //当前分类的分页下暂无数据
                         this.isGetMore = false  //禁止再次请求数据
                         console.log('当前分页暂无数据');
@@ -102,9 +105,10 @@ export default {
         getCateList(id) {  //通过获取到的分类id重新获取数据
             this.params.cat_id = id
             this.params.p = 1
-            this.goodsList = []
+            // this.goodsList = []
             this.isGetMore = true
-            this.getGoodList();
+            store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
+            this.getGoodList('click');
             this.cateClickState = false //先将分类点击状态设置为false,
             setTimeout(() => {
                 //500毫秒之后再设置为true，防止点击分类之后页面滚动条发生变化导致触底再次加载数据
@@ -135,6 +139,7 @@ export default {
                     let outerHeight = document.documentElement.clientHeight;
                     //当前判断页面是否触底
                     if (innerHeight <= (outerHeight + scrollTop)) { 
+                        store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
                         this.getGoodList();
                     }
                 }
@@ -158,6 +163,7 @@ export default {
         }
     },
     mounted() {
+        store.dispatch('loadingState/isOpenFun',true) //是否加载全局loading动画，首次加载true
         this.$post('/api/NewIndex/homeIndexnew_four',{ //加载首页数据
             latitude:this.params.latitude,
             longitude:this.params.longitude,
@@ -187,9 +193,9 @@ export default {
             this.flag       = true
         })
         .then(() => {
-            this.getGoodList()
+            store.dispatch('loadingState/isOpenFun',true) //是否加载全局loading动画，当前加载true
+            this.getGoodList()                        
         })
-        // console.log(this.$refs.catesTop);
     },
     activated() {   //keep-alive缓存初始化
         ScrollPosition.get.call(this);       

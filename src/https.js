@@ -10,10 +10,12 @@
 import axios from 'axios';
 import 'mint-ui/lib/style.css';
 import store from './store/store.js'
+import { mapState, mapGetters, mapActions } from "vuex";
 import { MessageBox,Indicator } from 'mint-ui'; 
 import md5 from 'js-md5';
 import qs from 'qs';    //处理发起网络请求传递后台参数的格式
 
+let isGlobalLoading = false;
 
 axios.defaults.timeout = 10000;
 // axios.defaults.headers.common['Authorization'] = ''
@@ -23,6 +25,15 @@ axios.defaults.timeout = 10000;
 //http request 拦截器
 axios.interceptors.request.use(
     config => {
+        // console.log(store)
+        // console.log(store.getters);
+        isGlobalLoading = store.getters['loadingState/isOpen'];
+        if (isGlobalLoading) {
+            // 开始调用全局loading组件
+            store.dispatch("loadingState/isShowFun",true)
+        }
+        
+
         // const token = getCookie('session'); //注意使用的时候需要引入cookie方法，推荐js-cookie
         config.data = qs.stringify(getSign(config.data));
 
@@ -33,13 +44,14 @@ axios.interceptors.request.use(
         //   config.params = {'token':token}
         // }
         console.log(config.data)
-        // 开始调用全局loading组件
-        store.dispatch("loadingState/isShowFun",true)
+        
         return config;
     },
     error => {
         MessageBox.alert('数据加载超时,请检查您的网络或稍后重试!').then(action => {
-            store.dispatch("loadingState/isShowFun",false)
+            if (isGlobalLoading) {
+                store.dispatch("loadingState/isShowFun",false)   
+            }
         });
         console.log(error);
         return Promise.reject(error);
@@ -58,12 +70,16 @@ axios.interceptors.response.use(
         console.log('=============亲，数据包回来了=============')
         console.log(response.data)
         console.log('=========================================')
-        store.dispatch("loadingState/isShowFun",false)
+        if (isGlobalLoading) {
+            store.dispatch("loadingState/isShowFun",false)
+        }
         return response;
     },
     error => {
         MessageBox.alert('数据加载失败!').then(action => {
-            store.dispatch("loadingState/isShowFun",false)
+            if (isGlobalLoading) {
+                store.dispatch("loadingState/isShowFun",false)
+            }
         });
         console.log(error);
         return Promise.reject(error)

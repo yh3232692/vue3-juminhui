@@ -1,3 +1,7 @@
+import { stat } from "fs";
+import { resolve } from "path";
+import { reject } from "q";
+
 /**********************************************************************************
  * ================================================================================
  * 文件说明：Loading全局vuex状态
@@ -8,12 +12,16 @@
 
 
 const state = {             
-    loadingState: true     //全局loading组件的显示隐藏
+    loadingState: false,     //全局loading组件的显示隐藏
+    openLoading: false       //是否使用全局Loading组件
 }
 
 const getters = {       //实时监听state值的变化(最新状态)
-    isShow(state) {
+    isShow(state) {     //返回组件显示隐藏
         return state.loadingState
+    },
+    isOpen() {          //返回是否使用当前组件
+        return state.openLoading
     }
 }
 const mutations = { 
@@ -22,15 +30,18 @@ const mutations = {
     isShow(state, bool) {  //bool参数代表当前的boolean值，true或者false用来显示或隐藏当前loading
         state.loadingState = bool
     },
-    // hide(state) {
-    //     state.loadingState = false
-    // }
+    isOpen(state, bool) {   //bool参数代表当前的boolean值，true或者false用来判断是否开启当前组件
+        state.openLoading = bool
+    }
 }
 const actions = {
     //自定义触发mutations里函数的方法，context与store 实例具有相同方法和属性
     //当前改变state状态的方法属于异步执行
     isShowFun(context, bool) {
         context.commit('isShow', bool)
+    },
+    isOpenFun(context, bool){
+        context.commit('isOpen', bool)
     }
 }
 
