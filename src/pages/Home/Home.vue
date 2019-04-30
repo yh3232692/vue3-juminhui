@@ -5,7 +5,7 @@
         <!-- 首页轮播 -->
         <home-swiper :sliders="slider"></home-swiper>
         <!-- 首页图标入口 -->
-        <home-cate-icon :topIcon="topIcon" :icons="icons" ></home-cate-icon>
+        <home-cate-icon :topIcon="topIcon" :icons="icons" ></home-cate-icon>                
         <!-- 首页活动入口 -->
         <home-active 
             :special="special" 
@@ -24,6 +24,7 @@
             <!-- 惠民特卖商品分类 -->
             <cate-scroll :categroy="categroy" @clickCate="getCateList"></cate-scroll>
             <home-goods :goodsList="goodsList"></home-goods>
+            <get-more :type="getMoreType"></get-more>                        
         </div>
     </div>
 </template>
@@ -38,6 +39,7 @@ import CateScroll from '@/components/cateScroll/CateScroll.vue'
 import HomeGoods from '@/components/homeGoods/HomeGoods.vue'
 import ScrollPosition from '@/lib/scroll-position.js'
 import store from '@/store/store.js'
+import GetMore from '@/components/common/GetMore.vue'
 
 export default {
     name:'home',
@@ -68,7 +70,8 @@ export default {
             },
             isGetMore:true,     //是否允许上拉触底加载更多
             cateClickState:true,    //分类点击状态
-            cateBarState:false  //是否显示悬浮商品分类
+            cateBarState:false,  //是否显示悬浮商品分类
+            getMoreType:1  //初始化状态为空
         }
     },
     methods: {
@@ -88,11 +91,13 @@ export default {
                         ++this.params.p
                         if (eventName == 'click') { //如果当前是点击分类请求数据
                             this.goodsList = goodsList;
+                            this.getMoreType = 1; //
                         } else {
                             this.goodsList = this.goodsList.concat(goodsList)   
                         }
                     } else {    //当前分类的分页下暂无数据
                         this.isGetMore = false  //禁止再次请求数据
+                        this.getMoreType = 3; //已经加载完成
                         console.log('当前分页暂无数据');
                         return false;
                     }
@@ -105,7 +110,6 @@ export default {
         getCateList(id) {  //通过获取到的分类id重新获取数据
             this.params.cat_id = id
             this.params.p = 1
-            // this.goodsList = []
             this.isGetMore = true
             store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
             this.getGoodList('click');
@@ -140,6 +144,11 @@ export default {
                     //当前判断页面是否触底
                     if (innerHeight <= (outerHeight + scrollTop)) { 
                         store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
+                        if (!this.isGetMore) { //如果isGetMore为false，则不允许上滑加载数据
+                            this.getMoreType = 3; //没有更多数据
+                        } else {
+                            this.getMoreType = 2; //上滑显示加载动画  
+                        }
                         this.getGoodList();
                     }
                 }
@@ -205,7 +214,7 @@ export default {
         window.removeEventListener('scroll',this.scrollFun)        
     },
     components:{
-        SearchBar, HomeSwiper, HomeCateIcon, HomeActive, CateScroll, HomeGoods
+        SearchBar, HomeSwiper, HomeCateIcon, HomeActive, CateScroll, HomeGoods, GetMore
     },
 }
 
