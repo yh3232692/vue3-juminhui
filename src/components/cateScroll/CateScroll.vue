@@ -3,8 +3,10 @@
         <div class="cate-box" ref="bscroll">
             <ul ref="content">
                 <li :class="[index == cateIndex ? 'cate-active' : '']" 
-                v-for="(cate, index) in categroy" 
-                :key="index" @click="getCateId(cate.id, index)" ref="cate">
+                    v-for="(cate, index) in categroy" 
+                    :key="index" 
+                    @click="getCateId(cate.id, index)" 
+                    ref="cate">
                     {{cate.category_name}}
                 </li>
             </ul>
@@ -18,45 +20,53 @@ import BScroll from 'better-scroll'
 export default {
     data() {
         return {
-            cateIndex: 0,
             bscroll: {},
             startX: 0,
             startY: 0,
             scrollWidth:'',
-            listX: [],   //记录列表中的每个元素距离父元素的x偏移量
+            offsetTop:0
         }
     },
-    props:['categroy'],
+    props:{
+        categroy:Array,
+        cateIndex: {
+            type: Number,
+            default: 0
+        },
+        linked:{    //当前页面是否加载当前两个或两个上，并且需要联动 true(需要联动) false(不需要联动)
+            type: Boolean,
+            default: false
+        }
+    },
     methods: {
         getCateId (id, index) {
             if(index == this.cateIndex) return false;
-            let currentX = this.listX[index],
-                baseWidth = this.scrollWidth/2;
-            if (currentX < baseWidth) {
-                this.bscroll.scrollTo(0, this.startY)
-            } else {
-                this.bscroll.scrollTo(-(currentX - baseWidth), this.startY)   
+            
+            if (!this.linked) {
+                this.cateIndex = index;                
+                this.clickScrollTo(index)
             }
-            this.cateIndex = index;
-            this.$emit('clickCate',id);
+            
+            this.$emit('clickCate', id, index);
         },
         _initScrollDom () {     //初始化计算宽度
             return new Promise((resolve, reject) => { //设计成promise模式，可以解决滚动条首次触摸没反应的问题
                 let content = this.$refs.content;
                 let listDom = content.children;
                 let width = 0,
-                    listX = [],
                     baseX = listDom[0].getBoundingClientRect().left; //获取第一个元素距离屏幕左边的距离
                 for (let i = 0; i < listDom.length; i++) {
                     const eleWidth = listDom[i].clientWidth;
                     width += eleWidth
-                    const eleX = listDom[i].getBoundingClientRect().left - baseX;  
-                    listX.push(eleX)
                 }
                 content.style.width = width + 'px'
-                this.listX = listX;
                 resolve();  
             })        
+        },
+        clickScrollTo(index) { //设置滚动到指定元素的计算方法，公开方法
+            let baseWidth = this.scrollWidth/2 - this.$refs.cate[index].clientWidth/2;
+            let cateEl = this.$refs.cate[index];
+            this.bscroll.scrollToElement(cateEl, 300, -baseWidth)
         }
     },
     mounted() {
@@ -73,6 +83,7 @@ export default {
                     eventPassthrough:'vertical'
                 })
             })
+            this.offsetTop = this.$refs.bscroll.getBoundingClientRect().top;
         })
     },
 }

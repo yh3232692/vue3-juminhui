@@ -22,9 +22,25 @@
                 <img src="https://lg-6d6g0sjo-1257245756.cos.ap-shanghai.myqcloud.com/hdj_biaotitemai@2x.png" alt="">
             </div>
             <!-- 惠民特卖商品分类 -->
-            <cate-scroll :categroy="categroy" @clickCate="getCateList"></cate-scroll>
+            <cate-scroll 
+                :categroy="categroy" 
+                @clickCate="getCateList" 
+                :linked="true"                
+                ref="cateBar" 
+                :cateIndex="cateIndex">
+            </cate-scroll>
             <home-goods :goodsList="goodsList"></home-goods>
             <get-more :type="getMoreType"></get-more>                        
+        </div>
+        <!-- 滚动一定高度分类进行吸顶 -->
+        <div class="cate-top" v-if="flag" :style="{opacity:cateBarState ? 1 : 0}">
+            <cate-scroll 
+                :categroy="categroy" 
+                @clickCate="getCateList" 
+                :cateIndex="cateIndex"
+                :linked="true"
+                ref="cateTop">
+            </cate-scroll>
         </div>
     </div>
 </template>
@@ -71,7 +87,8 @@ export default {
             isGetMore:true,     //是否允许上拉触底加载更多
             cateClickState:true,    //分类点击状态
             cateBarState:false,  //是否显示悬浮商品分类
-            getMoreType:1  //初始化状态为空
+            getMoreType:1,  //初始化状态为空
+            cateIndex:0
         }
     },
     methods: {
@@ -107,34 +124,44 @@ export default {
                 }
             })
         },
-        getCateList(id) {  //通过获取到的分类id重新获取数据
-            this.params.cat_id = id
-            this.params.p = 1
-            this.isGetMore = true
-            store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
-            this.getGoodList('click');
-            this.cateClickState = false //先将分类点击状态设置为false,
-            setTimeout(() => {
-                //500毫秒之后再设置为true，防止点击分类之后页面滚动条发生变化导致触底再次加载数据
-                this.cateClickState = true 
-            },500)
+        getCateList(id,index) {  //通过获取到的分类id重新获取数据
+
+            {   //设置分类组件修改选中分类
+                this.cateIndex = index  
+                this.$refs.cateBar.clickScrollTo(index)
+                this.$refs.cateTop.clickScrollTo(index)
+            }
+
+            {   //设置当前组件数据
+                this.params.cat_id = id
+                this.params.p = 1
+                this.isGetMore = true
+                store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
+                this.getGoodList('click');
+                this.cateClickState = false //先将分类点击状态设置为false,
+                setTimeout(() => {
+                    //500毫秒之后再设置为true，防止点击分类之后页面滚动条发生变化导致触底再次加载数据
+                    this.cateClickState = true 
+                },500)
+            }
+            
         },
         scrollFun() {   //滚动监听
             if(this.cateClickState == true) {
                 // 滚动过的高度
                 let scrollTop = -(document.body.getBoundingClientRect().top);
 
-                // {   //当前代码块处理首页商品分类滚动监听定位顶部
-                //     let catesTops = this.$refs.specialGoods.catesTop;
-                //     let searchHeight = document.getElementById('position').getBoundingClientRect().height;
-                //     catesTops -= searchHeight
-                //     // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
-                //     if (scrollTop >= catesTops) {
-                //         this.cateBarState = true
-                //     } else {
-                //         this.cateBarState = false
-                //     }
-                // }
+                {   //当前代码块处理首页商品分类滚动监听定位顶部
+                    let catesTops = this.$refs.cateBar.offsetTop;
+                    let searchHeight = document.getElementById('position').getBoundingClientRect().height;
+                    catesTops -= searchHeight
+                    // 当滚动的距离大于商品分类初始化距离顶部距离时候显示并吸顶
+                    if (scrollTop >= catesTops) {
+                        this.cateBarState = true
+                    } else {
+                        this.cateBarState = false
+                    }
+                }
 
                 {   //当前代码块监听页面触底加载分页数据
                     //可滚动容器的高度
@@ -228,6 +255,16 @@ export default {
 }
 .model-logo img {
     height: 0.4rem;
+}
+.cate-top {
+    position: fixed;
+    top: 0.8rem;
+    left: 0;
+    z-index: 99;
+    background: #fff;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    width: 100%;
 }
 #home{
     padding-bottom: 1rem;
