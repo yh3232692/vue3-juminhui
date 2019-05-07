@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <loading v-show="isShow && isOpen"></loading>
-    <home-tab></home-tab>
+    <home-tab v-show="tabBarState"></home-tab>
     <transition name="router-fade" mode="out-in">
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -21,6 +21,11 @@ import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "app",
+  data() {
+    return {
+      tabBarState:true
+    }
+  },
   components: {
     Home,
     Loading,
@@ -32,8 +37,18 @@ export default {
     // }),
     ...mapGetters("loadingState", [
       //第二种写法
-      "isShow","isOpen"
+      "isShow",
+      "isOpen"
     ])
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to);
+      const routerNameArr = ['Home', 'Cart', 'Person']
+      if (!routerNameArr.includes(to.name)) {
+        this.tabBarState = false;
+      }
+    }
   }
 };
 </script>

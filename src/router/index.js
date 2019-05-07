@@ -4,6 +4,7 @@ import Home from '@/pages/Home/Home'
 import Chain from '@/pages/chain/Chain'
 import Cart from '@/pages/cart/Cart'
 import Person from '@/pages/person/Person'
+import SpecialDay from '@/pages/SpecialDay/SpecialDay'
 
 
 
@@ -29,6 +30,11 @@ export default new Router({
             component:Person,
             meta: { keepAlive: true}
         },
+        {
+            path:'/special-day',
+            name:'SpecialDay',
+            component:SpecialDay
+        }
     ],
     mode:"history",
 })

@@ -3,7 +3,7 @@
         <!-- 活动模块第一行 -->
         <div class="box-1">
             <!-- 每日特惠模块 -->
-            <div class="tehui active-box">
+            <div class="tehui active-box" @click="jump('special')">
                 <div class="title-box">
                     <p class="title">
                         <span class="c-red">{{special.title}}</span>
@@ -153,6 +153,19 @@ export default {
                     }, 100);
                 }, 4000)
             }
+        },
+        jump(name){
+            let routerLink = {};
+            switch (name) {
+                case 'special':
+                    routerLink.name = 'SpecialDay'
+                    break;
+            
+                default:
+                    break;
+            }
+            this.$router.push(routerLink)
+            console.log(this.$router);
         }
     },
     mounted() {
