@@ -1,13 +1,14 @@
 <template>
     <div id="cate-scroll" >
         <div class="cate-box" ref="bscroll">
-            <ul ref="content">
+            <ul ref="content" 
+                :style="{color:fontColor?fontColor:'#333'}">
                 <li :class="[index == cateIndex ? 'cate-active' : '']" 
                     v-for="(cate, index) in categroy" 
                     :key="index" 
                     @click="getCateId(cate.id, index)" 
                     ref="cate">
-                    {{cate.category_name}}
+                    {{cate[cateName]}}
                 </li>
             </ul>
         </div>
@@ -24,7 +25,7 @@ export default {
             startX: 0,
             startY: 0,
             scrollWidth:'',
-            offsetTop:0
+            offsetTop:0,
         }
     },
     props:{
@@ -36,7 +37,12 @@ export default {
         linked:{    //当前页面是否加载当前两个或两个上，并且需要联动 true(需要联动) false(不需要联动)
             type: Boolean,
             default: false
-        }
+        },
+        cateName:{  //当前分类显示字段key，因为后台返回的数据格式不一样
+            type:String,
+            default:'category_name'
+        },
+        fontColor:String
     },
     methods: {
         getCateId (id, index) {
@@ -53,6 +59,7 @@ export default {
             return new Promise((resolve, reject) => { //设计成promise模式，可以解决滚动条首次触摸没反应的问题
                 let content = this.$refs.content;
                 let listDom = content.children;
+                if (listDom.length <= 0) return false;
                 let width = 0,
                     baseX = listDom[0].getBoundingClientRect().left; //获取第一个元素距离屏幕左边的距离
                 for (let i = 0; i < listDom.length; i++) {
@@ -84,6 +91,8 @@ export default {
                 })
             })
             this.offsetTop = this.$refs.bscroll.getBoundingClientRect().top;
+            // let active = document.querySelector('.cate-active')
+            // active.setAttribute('data-bgcolor','#ffffff')                
         })
     },
 }
@@ -94,12 +103,9 @@ export default {
 .cate-box {
     width: 100%;
     overflow: hidden;
-    /* height: 0.7rem; */
-    /* overflow-x: scroll;   */
 }
 .cate-box ul{
     white-space:nowrap;
-    /* width: auto; */
 }
 .cate-box ul li {
     display: inline-block;
@@ -107,19 +113,17 @@ export default {
     line-height: 0.7rem;
     position:relative;
     padding:0 0.16rem;
-    font-size:0.3rem;
-    color:#333;
+    font-size:0.26rem;
     font-weight: bold;
 }
 
 .cate-box ul .cate-active {
     font-size: 0.32rem;
-    color:#333;
     font-weight: bold;
 }
 .cate-box ul .cate-active::after {
     display: block;
-    background: #f54440;
+    background-color: #f54440;
     content: '';
     width: 60%;
     height: 0.06rem;
