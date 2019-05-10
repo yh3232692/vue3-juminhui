@@ -10,7 +10,10 @@
             <cate-scroll 
                 :categroy="categroy"
                 :cateName="cateScrollOptions.cateName"
-                fontColor="#fff">
+                fontColor="#fff"
+                activeLineColor="rgb(242,240,70)"
+                @clickCate="changeCate"
+                :cateIndex="cateIndex">
             </cate-scroll>
         </div>
     </div>
@@ -34,9 +37,15 @@ export default {
             cateScrollOptions:{
                 cateName:'cat_name',
                 fontColor:'#fff',
-                bgColor:'rgb(242, 240, 70)'
-            }
-            
+                bgColor:'rgb(242, 240, 70)',
+            },
+            cateIndex:0
+        }
+    },
+    methods: {
+        changeCate:function (id,index) {
+            console.log(id,index)
+            this.cateIndex = index;
         }
     },
     mounted() {

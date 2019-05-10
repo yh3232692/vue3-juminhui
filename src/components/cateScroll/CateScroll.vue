@@ -8,6 +8,7 @@
                     :key="index" 
                     @click="getCateId(cate.id, index)" 
                     ref="cate">
+                    <div class="cative-line" v-show="index == cateIndex" :style="{background:activeLineColor?activeLineColor:'#f54440'}" ></div>
                     {{cate[cateName]}}
                 </li>
             </ul>
@@ -42,17 +43,15 @@ export default {
             type:String,
             default:'category_name'
         },
-        fontColor:String
+        fontColor:String,
+        activeLineColor:String
     },
     methods: {
         getCateId (id, index) {
             if(index == this.cateIndex) return false;
-            
             if (!this.linked) {
-                this.cateIndex = index;                
                 this.clickScrollTo(index)
             }
-            
             this.$emit('clickCate', id, index);
         },
         _initScrollDom () {     //初始化计算宽度
@@ -90,9 +89,7 @@ export default {
                     eventPassthrough:'vertical'
                 })
             })
-            this.offsetTop = this.$refs.bscroll.getBoundingClientRect().top;
-            // let active = document.querySelector('.cate-active')
-            // active.setAttribute('data-bgcolor','#ffffff')                
+            this.offsetTop = this.$refs.bscroll.getBoundingClientRect().top;              
         })
     },
 }
@@ -121,7 +118,7 @@ export default {
     font-size: 0.32rem;
     font-weight: bold;
 }
-.cate-box ul .cate-active::after {
+/* .cate-box ul .cate-active::after {
     display: block;
     background-color: #f54440;
     content: '';
@@ -135,6 +132,16 @@ export default {
     margin: 0 auto;
     z-index: 10;
     border-radius: 0.06rem;
+} */
+.cative-line {
+    width: 50%;
+    height: 0.06rem;
+    border-radius: 0.03rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0 auto;
 }
 </style>
 

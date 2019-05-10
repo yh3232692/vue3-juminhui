@@ -2,7 +2,7 @@
     <div id="navigation-bar" 
         :style="{color:fontColor?fontColor:'#fff',background:bgColor?bgColor:'#f54440'}">
         <!-- 左侧返回按钮 -->
-        <div class="nav-left" v-if="isBack">
+        <div class="nav-left" v-if="isBack" @click="goBack">
             <i class="back-icon iconfont icon-jiantou2"></i>
             <slot name="backText"></slot>
         </div>
@@ -37,7 +37,12 @@ export default {
         fontColor:String,
         bgColor:String
 
-    }
+    },
+    methods: {
+        goBack() {
+            
+        }
+    },
 }
 </script>
 
