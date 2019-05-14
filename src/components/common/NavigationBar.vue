@@ -38,10 +38,20 @@ export default {
         bgColor:String
 
     },
+    data() {
+        return {
+            innerHeight:0
+        }
+    },
     methods: {
         goBack() {
-            
+            this.$router.go(-1)
         }
+    },
+    mounted() {
+        this.$nextTick(() => {
+            this.innerHeight = document.getElementById('navigation-bar').clientHeight;
+        })
     },
 }
 </script>

@@ -26,7 +26,7 @@ export default {
             startX: 0,
             startY: 0,
             scrollWidth:'',
-            offsetTop:0,
+            offsetTop:0
         }
     },
     props:{
@@ -89,7 +89,7 @@ export default {
                     eventPassthrough:'vertical'
                 })
             })
-            this.offsetTop = this.$refs.bscroll.getBoundingClientRect().top;              
+            this.offsetTop = this.$refs.bscroll.getBoundingClientRect().top;    
         })
     },
 }
