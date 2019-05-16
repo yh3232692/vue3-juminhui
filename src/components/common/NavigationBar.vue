@@ -1,23 +1,24 @@
 <template>
     <div id="navigation-bar" 
         :style="{color:fontColor?fontColor:'#fff',background:bgColor?bgColor:'#f54440'}">
-        <!-- 左侧返回按钮 -->
-        <div class="nav-left" v-if="isBack" @click="goBack">
-            <i class="back-icon iconfont icon-jiantou2"></i>
-            <slot name="backText"></slot>
-        </div>
-        <!-- 左侧自定义内容 直接留出插槽位置 -->
-        <div class="nav-left" v-if="isCustom">
-            <slot name="custom-left"></slot>
-        </div>
-        <!-- 中间内容部分 -->
-        <div class="nav-content text-ellipsis">
-            <!-- 每日特惠每日特惠每日特惠每日特惠 -->
-            <slot name="content"></slot>
-        </div>
-        <!-- 右侧部分 -->
-        <div class="nav-right">
-            <slot name="nav-right"></slot>
+        <div class="nav-box">
+            <!-- 左侧返回按钮 -->
+            <div class="nav-left" v-if="isBack" @click="goBack">
+                <i class="back-icon iconfont icon-jiantou2"></i>
+                <slot name="backText"></slot>
+            </div>
+            <!-- 左侧自定义内容 直接留出插槽位置 -->
+            <div class="nav-left" v-if="isCustom">
+                <slot name="custom-left"></slot>
+            </div>
+            <!-- 中间内容部分 -->
+            <div class="nav-content text-ellipsis">
+                <slot name="content"></slot>
+            </div>
+            <!-- 右侧部分 -->
+            <div class="nav-right">
+                <slot name="nav-right"></slot>
+            </div>
         </div>
     </div>
 </template>
@@ -62,8 +63,13 @@ export default {
     height: 0.88rem;
     padding: 0 0.3rem;
     box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.bav-box{
+    width: 100%;
     position: relative;
-    color: #fff;    
 }
 .nav-left {
     display: flex;

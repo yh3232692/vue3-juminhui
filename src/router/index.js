@@ -5,6 +5,7 @@ import Chain from '@/pages/chain/Chain'
 import Cart from '@/pages/cart/Cart'
 import Person from '@/pages/person/Person'
 import SpecialDay from '@/pages/SpecialDay/SpecialDay'
+import GoodsDetail from '@/pages/GoodsDetail/GoodsDetail'
 
 
 
@@ -34,6 +35,11 @@ export default new Router({
             path:'/special-day',
             name:'SpecialDay',
             component:SpecialDay
+        },
+        {
+            path:'/goods-detail',
+            name:'GoodsDetail',
+            component:GoodsDetail
         }
     ],
     mode:"history",

@@ -16,25 +16,33 @@
                 :cateIndex="cateIndex">
             </cate-scroll>
         </div>
-        <div class="container" ref="bscroll" :style="{height:listHeight + 'px'}">
-            <ul :style="{'min-height':listHeight + 'px'}">
-                <li class="goods">
-                    <img src="https://oss.jmhshop.com/Public/upload/goods/2018/10-19/5bc93b979fc89.png" alt="">
-                    <div class="cont">
-                        <p class="name">【3瓶装】 澳芝曼绵羊脂滋润维E霜‍ 250*3</p>
-                        <div class="price-group">
-                            <p class="price">
-                                <span class="p-hui">会员价：￥<span class="p-num">82.00</span></span>
-                                <span class="btn-qiang">马上抢</span>
-                            </p>
-                            <p class="price-bot">
-                                <span class="line-price">原价：￥180.00</span>
-                                <span>销量：7324</span>
-                            </p>
+        <div class="container">
+            <scroll-view 
+                :height="listHeight" 
+                @pullUpEvent="pullUpFun">
+                <ul :style="{'min-height':listHeight + 'px'}">
+                    <li class="goods" 
+                        v-for="(good,index) in goodsList" 
+                        :key="index"
+                        @click="jump" >
+                        <img :src="good.original_img" alt="">
+                        <div class="cont">
+                            <p class="name">{{good.goods_name}}</p>
+                            <div class="price-group">
+                                <p class="price">
+                                    <span class="p-hui">会员价：￥<span class="p-num">{{good.price}}</span></span>
+                                    <span class="btn-qiang">马上抢</span>
+                                </p>
+                                <p class="price-bot">
+                                    <span class="line-price">原价：￥{{good.cost_price}}</span>
+                                    <span>销量：{{good.sales_sum}}</span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                    <!-- <get-more :type="getMoreType"></get-more>  -->
+                </ul>
+            </scroll-view>          
         </div>
     </div>
 </template>
@@ -43,7 +51,10 @@
 
 import NavigationBar from '@/components/common/NavigationBar.vue'
 import CateScroll from '@/components/cateScroll/CateScroll.vue'
-import BScroll from 'better-scroll'
+// import BScroll from 'better-scroll'
+import ScrollView from '@/components/common/ScrollView.vue'
+import store from '@/store/store.js'
+import GetMore from '@/components/common/GetMore.vue'
 
 export default {
     name:'spacial-day',
@@ -59,14 +70,78 @@ export default {
                 cateName:'cat_name',
                 fontColor:'#fff'
             },
-            cateIndex:0,
-            listHeight:0
+            cateIndex:0,    //当前选中分类的索引
+            listHeight:0,   //scroll外层容器高度
+            p:1,            //当前页面加载的分页
+            goodsList:[],   
+            getMoreType:1,
+            isGetMore:true,
+            cateClickState:true,
+            scrollOption:{
+                click:false,
+                pullUpLoad: {
+                    threshold: 20
+                }
+            }
         }
     },
     methods: {
-        changeCate:function (id,index) {
+        changeCate:function (id,index) { //点击切换分类
             console.log(id,index)
             this.cateIndex = index;
+            this.p = 1;
+            this.isGetMore = true;
+            this.getMoreType = 1
+            this.goodsList = [];
+            this.cateClickState = false;
+            setTimeout(() => {
+                this.cateClickState = true
+            },200)
+            store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
+            this.getListData();
+        },
+        getListData() { //获取列表数据
+            let param = {
+                cat_id:this.categroy[this.cateIndex].id,
+                p:this.p
+            }
+            this.$post('/api/Special/daily_special_list',param)
+            .then((response) => {
+                if (response.status == 1) {
+                    const data = response.data;
+                    if (data.length > 0) {
+                        ++this.p;
+                        this.goodsList = this.goodsList.concat(data)
+                    } else {
+                        this.getMoreType = 3; //已经加载完成
+                        this.isGetMore = false
+                    }
+                    this.$nextTick(() => {
+                        // this.bscroll.finishPullUp()
+                    })
+                }
+            })
+        },
+        pullUpFun() {
+            
+        },
+        // pullUpLoadEvent() { //上拉加载
+        //     this.bscroll.on('pullingUp', () => {
+        //         if (!this.cateClickState) return false;
+        //         if (this.isGetMore) {
+        //             this.getMoreType = 2
+        //             store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
+        //             this.getListData();
+        //         } else {
+        //             this.getMoreType = 3
+        //         }
+        //     })
+        // },
+        jump() {  //跳转商品详情
+            let routerLink = {
+                name:'GoodsDetail'
+            }
+            this.$router.push(routerLink)
         }
     },
     mounted() {
@@ -79,33 +154,33 @@ export default {
         .then((data) => {
             this.categroy = data;
             this.flag = true;  
-               
-        })
-        .then(() => {
-            let param = {
-                cat_id:this.categroy[this.cateIndex],
-                p:this.p
-            }
-            this.$post('/api/Special/daily_special_list',param)    
+            store.dispatch('loadingState/isOpenFun',true) //是否加载全局loading动画，当前加载true
+            this.getListData();
         })
         .then(() => {
             this.$nextTick(() => {
-                let bscroll = this.$refs.bscroll     
-                this.bscroll = new BScroll(bscroll,{
-                    click:true
-                })
+                // let bscroll = this.$refs.bscroll     
+                // this.bscroll = new BScroll(bscroll,{
+                //     click:true,
+                //     pullUpLoad: {
+                //         threshold: 50
+                //     }
+                // })
+                // this.pullUpLoadEvent();
 
-                const docHeight = document.documentElement.clientHeight,
-                navHeight = this.$refs.navBar.innerHeight,
-                cateHieght = this.$refs.cates.getBoundingClientRect().height;
-
-                this.listHeight = docHeight - navHeight - cateHieght;
+                { //计算当前scroll外面容器的高度
+                    const docHeight = document.documentElement.clientHeight,
+                    navHeight = this.$refs.navBar.innerHeight,
+                    cateHieght = this.$refs.cates.getBoundingClientRect().height;
+                    this.listHeight = docHeight - navHeight - cateHieght; 
+                }
+                
             })
         })
         
     },
     components:{
-        NavigationBar, CateScroll
+        NavigationBar, CateScroll, GetMore, ScrollView
     }
 }
 </script>
@@ -115,6 +190,7 @@ export default {
     width: 100%;
     height: 100%;
     background: #f3f5f9;
+    padding-top: 0.88rem;
 }
 .cate-scroll {
     width: 100%;
@@ -156,6 +232,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 3.98rem;
 }
 .cont .name {
     font-size:0.3rem;

@@ -47,6 +47,8 @@ export default {
       const routerNameArr = ['Home', 'Cart', 'Person']
       if (!routerNameArr.includes(to.name)) {
         this.tabBarState = false;
+      } else {
+        this.tabBarState = true;
       }
     }
   }

@@ -43,7 +43,7 @@ axios.interceptors.request.use(
         // if(token){
         //   config.params = {'token':token}
         // }
-        console.log(config.data)
+        // console.log(config.data)
         
         return config;
     },
