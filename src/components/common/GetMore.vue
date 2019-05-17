@@ -22,6 +22,14 @@ Vue.component(Spinner.name,Spinner)
 export default {
     name:'get-more',
     props:['type'], //type控制当前显示哪种类型结构 1、显示加载更多 2、显示正在加载中 3、没有更多了
+    data() {
+        return {
+            eleHeight:0
+        }
+    },
+    mounted() {
+        this.eleHeight = document.getElementById('get-more').clientHeight;
+    },
     components:{
         Spinner
     }

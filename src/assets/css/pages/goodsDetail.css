@@ -27,7 +27,7 @@
     position: relative;
 }
 .nav-active::after{
-    width: 80%;
+    width: 100%;
     content: '';
     height: 0.04rem;
     background: #f54440;

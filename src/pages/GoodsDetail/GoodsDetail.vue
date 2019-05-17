@@ -24,19 +24,17 @@
             <swiper :options="goodSwiperOption">
                 <swiper-slide>
                     <div class="swiper-box" :style="{height:goodSwiperHeight+'px'}" ref="goods">
-                        <div>11111111111111111</div>
+                        <goods :height="goodSwiperHeight"></goods>
                     </div>   
                 </swiper-slide>
                 <swiper-slide>
                     <div class="swiper-box" :style="{height:goodSwiperHeight+'px'}" ref="detail">
                         <div>2222222222222222</div>
-                        
                     </div> 
                 </swiper-slide>
                 <swiper-slide>
                     <div class="swiper-box" :style="{height:goodSwiperHeight+'px'}" ref="commont">
                         <div>33333333333333</div>
-                        
                     </div>
                 </swiper-slide>
                 <swiper-slide>
@@ -54,6 +52,7 @@ import NavigationBar from '@/components/common/NavigationBar.vue'
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import BScroll from 'better-scroll'
+import Goods from './Goods.vue'
 
 export default {
     name:"goods-detail",
@@ -107,7 +106,7 @@ export default {
         })
     },
     components:{
-        NavigationBar,swiper,swiperSlide
+        NavigationBar,swiper,swiperSlide,Goods
     }
 }
 </script>

@@ -19,12 +19,14 @@
         <div class="container">
             <scroll-view 
                 :height="listHeight" 
-                @pullUpEvent="pullUpFun">
-                <ul :style="{'min-height':listHeight + 'px'}">
+                @pullUpEvent="pullUpFun"
+                ref="listScroll" 
+                :isPullUp="isPullUp">
+                <ul :style="{'min-height':scrollHeight + 'px'}">
                     <li class="goods" 
                         v-for="(good,index) in goodsList" 
                         :key="index"
-                        @click="jump" >
+                        @click="jump">
                         <img :src="good.original_img" alt="">
                         <div class="cont">
                             <p class="name">{{good.goods_name}}</p>
@@ -40,7 +42,6 @@
                             </div>
                         </div>
                     </li>
-                    <!-- <get-more :type="getMoreType"></get-more>  -->
                 </ul>
             </scroll-view>          
         </div>
@@ -74,7 +75,7 @@ export default {
             listHeight:0,   //scroll外层容器高度
             p:1,            //当前页面加载的分页
             goodsList:[],   
-            getMoreType:1,
+            isPullUp:true,
             isGetMore:true,
             cateClickState:true,
             scrollOption:{
@@ -82,7 +83,8 @@ export default {
                 pullUpLoad: {
                     threshold: 20
                 }
-            }
+            },
+            scrollHeight:0
         }
     },
     methods: {
@@ -91,9 +93,9 @@ export default {
             this.cateIndex = index;
             this.p = 1;
             this.isGetMore = true;
-            this.getMoreType = 1
             this.goodsList = [];
             this.cateClickState = false;
+            this.listScroll.resetLoading();
             setTimeout(() => {
                 this.cateClickState = true
             },200)
@@ -112,31 +114,25 @@ export default {
                     if (data.length > 0) {
                         ++this.p;
                         this.goodsList = this.goodsList.concat(data)
+                        this.listScroll.resetLoading();
                     } else {
-                        this.getMoreType = 3; //已经加载完成
+                        this.listScroll.finishload();
                         this.isGetMore = false
                     }
-                    this.$nextTick(() => {
-                        // this.bscroll.finishPullUp()
-                    })
                 }
             })
         },
         pullUpFun() {
-            
+            if (!this.cateClickState) return false;
+            const _this = this;
+            if (this.isGetMore) {
+                this.listScroll.showLoading(() => {
+                    _this.getListData();
+                });
+            } else {
+                this.listScroll.finishload();
+            }
         },
-        // pullUpLoadEvent() { //上拉加载
-        //     this.bscroll.on('pullingUp', () => {
-        //         if (!this.cateClickState) return false;
-        //         if (this.isGetMore) {
-        //             this.getMoreType = 2
-        //             store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
-        //             this.getListData();
-        //         } else {
-        //             this.getMoreType = 3
-        //         }
-        //     })
-        // },
         jump() {  //跳转商品详情
             let routerLink = {
                 name:'GoodsDetail'
@@ -159,20 +155,14 @@ export default {
         })
         .then(() => {
             this.$nextTick(() => {
-                // let bscroll = this.$refs.bscroll     
-                // this.bscroll = new BScroll(bscroll,{
-                //     click:true,
-                //     pullUpLoad: {
-                //         threshold: 50
-                //     }
-                // })
-                // this.pullUpLoadEvent();
-
+                this.listScroll = this.$refs.listScroll;
                 { //计算当前scroll外面容器的高度
                     const docHeight = document.documentElement.clientHeight,
                     navHeight = this.$refs.navBar.innerHeight,
                     cateHieght = this.$refs.cates.getBoundingClientRect().height;
                     this.listHeight = docHeight - navHeight - cateHieght; 
+                    console.log(this.listScroll.getMoreHeight)
+                    this.scrollHeight = this.listHeight - this.listScroll.getMoreHeight
                 }
                 
             })

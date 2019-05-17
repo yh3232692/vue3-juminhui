@@ -2,7 +2,7 @@
     <div id="scroll-view" :style="{height:height+'px'}" ref="bscroll">
         <div class="box">
             <slot></slot>
-            <get-more :type="getMoreType"></get-more>
+            <get-more :type="getMoreType" ref="getMore" v-show="isPullUp"></get-more>
         </div>
     </div>
 </template>
@@ -23,6 +23,10 @@ export default {
             default:function () {
                 return {}
             }
+        },
+        isPullUp:{
+            type:[String,Boolean],
+            default:false
         }
     },
     data() {
@@ -33,7 +37,8 @@ export default {
                     threshold: 50
                 }
             },
-            getMoreType:2 //上拉加载更多type
+            getMoreType:1, //上拉加载更多type
+            getMoreHeight:0
         }
     },
     methods: {
@@ -43,20 +48,35 @@ export default {
             let options = {...this.sOptions,...this.options}
             this.bscroll = new BScroll(bscroll,options)
         },
+
         _pullUpEvent() {    //上滑加载事件
             this.bscroll.on('pullingUp', () => {
                 this.$emit('pullUpEvent')
-                // if (!this.cateClickState) return false;
-                // if (this.isGetMore) {
-                //     this.getMoreType = 2
-                //     store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
-                //     this.getListData();
-                // } else {
-                //     this.getMoreType = 3
-                // }
             })
         },
-        
+
+        showLoading(callBack) { //显示加载动画
+            this.getMoreType = 2;
+            this.$store.dispatch('loadingState/isOpenFun',false) //是否加载全局loading动画，当前加载false
+            if (callBack && typeof callBack === 'function') {
+                callBack();
+            } else {
+                setTimeout(() => {
+                    this.resetLoading();
+                },500)
+            }
+            this.bscroll.finishPullUp();
+        },
+
+        finishload(){   //加载完成显示加载完成
+            this.getMoreType = 3;
+            this.bscroll.finishPullUp();
+        },
+
+        resetLoading() {    //隐藏当前上滑的显示效果
+            this.getMoreType = 1;
+            this.bscroll.finishPullUp();
+        }
     },
     components:{
         GetMore
@@ -65,6 +85,7 @@ export default {
         this.$nextTick(() => {
             this._initScroll();
             this._pullUpEvent();
+            this.getMoreHeight = this.$refs.getMore.eleHeight
         })
     },
 }
