@@ -66,12 +66,7 @@ export default {
             navList:['商品','详情','评价','推荐'],
             navIndex:0,
             goodSwiperOption: {
-				on: {
-					tap: function(e) {
-						console.log(e);
-						alert(this.realIndex); //获取当前点击索引
-					}
-				}
+				
             },
             goodSwiperHeight:0
         }
