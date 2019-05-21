@@ -23,22 +23,22 @@
         <div class="good-swriper">
             <swiper :options="goodSwiperOption">
                 <swiper-slide>
-                    <div class="swiper-box" :style="{height:goodSwiperHeight+'px'}" ref="goods">
+                    <div class="swiper-box" :style="{'min-height':goodSwiperHeight+'px'}" ref="goods">
                         <goods :height="goodSwiperHeight"></goods>
                     </div>   
                 </swiper-slide>
                 <swiper-slide>
-                    <div class="swiper-box" :style="{height:goodSwiperHeight+'px'}" ref="detail">
+                    <div class="swiper-box" :style="{'min-height':goodSwiperHeight+'px'}" ref="detail">
                         <div>2222222222222222</div>
                     </div> 
                 </swiper-slide>
                 <swiper-slide>
-                    <div class="swiper-box" :style="{height:goodSwiperHeight+'px'}" ref="commont">
+                    <div class="swiper-box" :style="{'min-height':goodSwiperHeight+'px'}" ref="commont">
                         <div>33333333333333</div>
                     </div>
                 </swiper-slide>
                 <swiper-slide>
-                    <div class="swiper-box" :style="{height:goodSwiperHeight+'px'}" ref="likes">
+                    <div class="swiper-box" :style="{'min-height':goodSwiperHeight+'px'}" ref="likes">
                         <div>44444444444444</div>
                     </div>
                 </swiper-slide>
