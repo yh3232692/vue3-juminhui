@@ -23,11 +23,13 @@
         <div class="good-swriper">
             <swiper :options="goodSwiperOption">
                 <swiper-slide>
+                    <!-- 加载商品信息 -->
                     <div class="swiper-box" :style="{'min-height':goodSwiperHeight+'px'}" ref="goods">
                         <goods :height="goodSwiperHeight"></goods>
                     </div>   
                 </swiper-slide>
                 <swiper-slide>
+                    <!-- 富文本详情 -->
                     <div class="swiper-box" :style="{'min-height':goodSwiperHeight+'px'}" ref="detail">
                         <div>2222222222222222</div>
                     </div> 
@@ -85,7 +87,7 @@ export default {
             })
         }
     },
-    mounted() {
+    mounted() { //生命周期mounted
         this.$nextTick(() => {
             const nameList = ['goods','detail','commont','likes'];
             nameList.forEach(ele => {

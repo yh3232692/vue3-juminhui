@@ -64,7 +64,6 @@ export default {
 					}
 				}
             },
-            list:['111111111','2222222222'],
             imageArr:[
                 'https://oss.jmhshop.com/Public/upload/goods/2018/10-26/5bd2b1b99b510.jpg',
                 'https://oss.jmhshop.com/Public/upload/goods/2018/10-26/5bd2b1df2d66b.jpg',
