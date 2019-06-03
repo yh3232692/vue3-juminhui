@@ -31,12 +31,28 @@
                 <span class="title">运费</span>
                 <span class="value">免运费</span>
             </p>
+            <!-- 商品评价 -->
             <div class="comment-box">
                 <div class="com-title">
                     <p><span class="shu"></span>商品评价</p>
                     <span class="arrow"><span class="arrow-cont"></span></span>
                 </div>
                 <comment></comment>       
+            </div>
+            <!-- 猜你喜欢 -->
+            <div class="user-like">
+                <div class="like-navs">
+                    <span class="like-active">猜你喜欢</span>
+                    <span>热门推荐</span>                    
+                </div>
+                <div class="like-cont">
+                    <goods-like></goods-like>
+                    <goods-like></goods-like>
+                    <goods-like></goods-like>
+                    <goods-like></goods-like>
+                    <goods-like></goods-like>
+                    <goods-like></goods-like>
+                </div>
             </div>
         </scroll-view>
     </div>
@@ -46,6 +62,7 @@
 import ScrollView from '@/components/common/ScrollView.vue'
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import Comment from './Comment.vue';
+import GoodsLike from './GoodsLike';
 export default {
     name:'goods',
     data() {
@@ -75,7 +92,7 @@ export default {
         height:[Number,String]
     },
     components:{
-        ScrollView, swiper, swiperSlide,Comment
+        ScrollView, swiper, swiperSlide, Comment, GoodsLike
     }
 }
 </script>
@@ -223,6 +240,51 @@ export default {
     height: 0.38rem;
     background: #f54440;
     margin-right: 0.16rem;
+}
+
+/* 猜你喜欢 */
+.user-like {
+    width: 100%;
+}
+.like-navs {
+    width: 100%;
+    display:flex;
+    justify-content: space-between;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    border-bottom: 0.02rem solid #f1f1f1;
+    background: #fff;
+    
+}
+.like-navs span {
+    text-align: center;
+    height: 0.88rem;
+    line-height: 0.88rem;
+    color: #333;
+    font-size: 0.3rem;
+    flex: 1;
+    position: relative;
+}
+.like-active {
+    color: #f54440;
+}
+.like-active::after{
+    content: '';
+    width: 100%;
+    height: 0.04rem;
+    background: #f54440;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.like-cont {
+    width: 100%;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background: #fff;
 }
 </style>
 

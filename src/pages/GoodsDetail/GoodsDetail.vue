@@ -13,7 +13,7 @@
             <ul>
                 <li v-for="(item, index) in navList" 
                     :key="index"
-                    @click="changeSwiper"
+                    @click="changeSwiper(index)"
                     :class="[navIndex == index ? 'nav-active' : '']">
                     {{item}}
                 </li>
@@ -21,7 +21,7 @@
         </div>
         <!-- 分类相关的页面 -->
         <div class="good-swriper">
-            <swiper :options="goodSwiperOption">
+            <swiper :options="goodSwiperOption" ref="mySwiper">
                 <swiper-slide>
                     <!-- 加载商品信息 -->
                     <div class="swiper-box" :style="{'min-height':goodSwiperHeight+'px'}" ref="goods">
@@ -74,8 +74,10 @@ export default {
         }
     },
     methods: {
-        changeSwiper(){
-            
+        changeSwiper(index){
+            if (index == this.navIndex) return false;
+            this.navIndex = index;
+            this.swiper.slideTo(index, 500, false)
         },
         _initScroll(name) { //初始化scroll
             let scroll = this.$refs[name]     
@@ -85,6 +87,11 @@ export default {
                     threshold: 50
                 }
             })
+        }
+    },
+    computed: {
+        swiper() {
+            return this.$refs.mySwiper.swiper;
         }
     },
     mounted() { //生命周期mounted
